@@ -326,8 +326,22 @@ def process_single(
 
     # Check if already evaluated
     if result_path.exists() and not force:
-        print(f"  ⏭️  Already evaluated — skipping (use --force to re-run)")
-        return None
+        try:
+            with open(result_path, "r", encoding="utf-8") as result_file:
+                previous_result = json.load(result_file)
+            if (
+                previous_result.get("status") == "completed"
+                and isinstance(previous_result.get("transcript"), str)
+                and previous_result["transcript"].strip()
+                and output_path.exists()
+            ):
+                print("  ⏭️  Valid result already exists — skipping")
+                return None
+        except (OSError, json.JSONDecodeError):
+            pass
+
+        print("  ⚠️  Existing result is empty or invalid — re-running inference")
+        force = True
 
     result = {
         "pid": pid,
@@ -521,7 +535,11 @@ def process_single(
             print(f"  ⚠️  Failed to extract tool calls from telemetry: {e}")
 
     result["actual_tool_calls"] = actual_tool_calls
-    result["status"] = "completed"
+    if result["transcript"].strip():
+        result["status"] = "completed"
+    else:
+        result["status"] = "silent_output"
+        result["error"] = asr_result.get("error", "ASR produced no output transcript")
 
     # Save result
     with open(result_path, "w") as f:

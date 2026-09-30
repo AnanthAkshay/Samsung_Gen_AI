@@ -525,7 +525,7 @@ class VoiceAgent(Agent):
 # ---------------------------------------------------------------------------
 # Agent server & session
 # ---------------------------------------------------------------------------
-server = AgentServer()
+server = AgentServer(load_threshold=0.95)
 
 
 @server.rtc_session()

@@ -107,9 +107,23 @@ def main():
         "--force", action="store_true", help="Overwrite existing results"
     )
     parser.add_argument(
+        "--retries",
+        type=int,
+        default=2,
+        help="Retries after inference errors or empty output (default: 2)",
+    )
+    parser.add_argument(
+        "--retry-backoff",
+        type=float,
+        default=2.0,
+        help="Initial retry delay in seconds; doubles on each retry",
+    )
+    parser.add_argument(
         "--asr-only", action="store_true", help="Skip inference, only run ASR"
     )
     args = parser.parse_args()
+    if args.retries < 0 or args.retry_backoff < 0:
+        parser.error("--retries and --retry-backoff must be non-negative")
 
     root_dir = Path(args.root_dir)
     if not root_dir.exists():
@@ -164,21 +178,42 @@ def main():
             f"\n[{stats['total']}/{len(inputs)}] Processing Speaker={speaker_id[:8]}... Example={example_id}..."
         )
 
-        try:
-            result = process_single(
-                speaker_id,
-                example_id,
-                input_path,
-                args.provider,
-                data,
-                asr_model,
-                asr_only=args.asr_only,
-                force=args.force,
-            )
+        result_path = input_path.parent / f"result_{args.provider}.json"
+        for attempt in range(args.retries + 1):
+            try:
+                result = process_single(
+                    speaker_id,
+                    example_id,
+                    input_path,
+                    args.provider,
+                    data,
+                    asr_model,
+                    asr_only=args.asr_only,
+                    force=args.force or attempt > 0,
+                )
+            except Exception as e:
+                print(f"  ❌ Unhandled error in process_single: {e}")
+                result = {
+                    "pid": speaker_id,
+                    "example_id": example_id,
+                    "provider": args.provider,
+                    "status": "batch_exception",
+                    "error": str(e),
+                    "traceback": traceback.format_exc(),
+                }
 
             if result is None:
                 stats["skipped"] += 1
-            elif result.get("status") == "completed":
+                break
+
+            result["attempts"] = attempt + 1
+            with open(result_path, "w", encoding="utf-8") as result_file:
+                json.dump(
+                    result, result_file, indent=2, ensure_ascii=False, cls=NpEncoder
+                )
+
+            has_transcript = bool(str(result.get("transcript") or "").strip())
+            if result.get("status") == "completed" and has_transcript:
                 stats["success"] += 1
                 lat = result.get("latency", {}).get("first_speech_s")
                 if lat:
@@ -188,23 +223,21 @@ def main():
                 per_lat = result.get("perceived_total_latency")
                 if per_lat:
                     stats["perceived_latency_sum"] += per_lat
+                break
+
+            if attempt < args.retries:
+                retry_delay = args.retry_backoff * (2**attempt)
+                print(
+                    f"  ⚠️  {result.get('status', 'incomplete')} result; "
+                    f"retry {attempt + 1}/{args.retries} in {retry_delay:.1f}s"
+                )
+                time.sleep(retry_delay)
             else:
                 stats["error"] += 1
-
-        except Exception as e:
-            print(f"  ❌ Unhandled error in process_single: {e}")
-            error_result = {
-                "pid": speaker_id,
-                "example_id": example_id,
-                "provider": args.provider,
-                "status": "batch_exception",
-                "error": str(e),
-                "traceback": traceback.format_exc(),
-            }
-            result_path = input_path.parent / f"result_{args.provider}.json"
-            with open(result_path, "w", encoding="utf-8") as result_file:
-                json.dump(error_result, result_file, indent=2, ensure_ascii=False)
-            stats["error"] += 1
+                print(
+                    f"  ❌ Failed after {attempt + 1} attempt(s): "
+                    f"{result.get('status', 'incomplete')}"
+                )
 
     duration = time.time() - start_time
     print(f"\n{'-'*60}")
