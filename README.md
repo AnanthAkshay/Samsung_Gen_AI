@@ -521,14 +521,3 @@ Development blockers and their resolutions are tracked in [NOTES.md](NOTES.md). 
 
 ---
 
-## 17. Final Submission Tag Instructions
-
-Per the Samsung PRISM Gen AI Hackathon submission guidelines, tag and push the final commit:
-
-```bash
-git add README.md Dockerfile .dockerignore demo/ docs/ extension_demo.py .gitignore
-git commit -m "Submit Samsung PRISM Gen AI Hackathon Theme 05 final release"
-git tag -a PRISM_GENAI_HACKATHON_Y2026 -m "Final submission for Samsung Gen AI Hackathon 3.0 Theme 05"
-git push origin main
-git push origin PRISM_GENAI_HACKATHON_Y2026
-```
