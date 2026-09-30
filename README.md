@@ -30,10 +30,8 @@ A low-latency, full-duplex conversational voice agent that understands spontaneo
 11. [Configuration & API Keys](#11-configuration--api-keys)
 12. [Innovation Highlights & Limitations](#12-innovation-highlights--limitations)
 13. [Roadmap — What's Next](#13-roadmap--whats-next)
-14. [Demonstration Video & Voiceover](#14-demonstration-video--voiceover)
-15. [Models & Providers (Citations)](#15-models--providers-citations)
-16. [Known Issues & Troubleshooting](#16-known-issues--troubleshooting)
-17. [Final Submission Tag Instructions](#17-final-submission-tag-instructions)
+14. [Models & Providers (Citations)](#15-models--providers-citations)
+15. [Known Issues & Troubleshooting](#16-known-issues--troubleshooting)
 
 ---
 
