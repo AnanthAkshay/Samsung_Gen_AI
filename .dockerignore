@@ -1,0 +1,10 @@
+.git
+.env
+venv/
+**/__pycache__
+*.pyc
+demo/out/*.mp4
+demo/out/*.wav
+demo/out/frames/
+demo/voice_clips/
+logs/*.log

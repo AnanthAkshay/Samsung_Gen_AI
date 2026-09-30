@@ -99,9 +99,10 @@ async def entrypoint(ctx: JobContext) -> None:
     # If lk_agent_tool.py configures the Gemini realtime model differently
     # (model name, voice, etc.), copy those settings here so the extension
     # matches the benchmark agent.
-    model_kwargs = {"voice": os.getenv("EXT_VOICE", "Puck")}
-    if os.getenv("EXT_GEMINI_MODEL"):
-        model_kwargs["model"] = os.environ["EXT_GEMINI_MODEL"]
+    model_kwargs = {
+        "model": os.getenv("EXT_GEMINI_MODEL", "gemini-2.5-flash-native-audio-preview-12-2025"),
+        "voice": os.getenv("EXT_VOICE", "Puck"),
+    }
 
     session = AgentSession(llm=google.realtime.RealtimeModel(**model_kwargs))
     await session.start(room=ctx.room, agent=CarAssistant())

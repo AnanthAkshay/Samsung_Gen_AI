@@ -68,3 +68,10 @@ htmlcov/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Demo recordings and temporary outputs
+demo/out/*
+!demo/out/final_submission_with_voice.mp4
+demo/voice_clips/
+demo/*.wav
+
