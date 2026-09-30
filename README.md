@@ -5,7 +5,7 @@
 > **Stack:** LiveKit Voice Agents SDK · Google Gemini 2.5 Flash Native Audio (end-to-end speech model)  
 > **Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md)  
 > **Submission Tag:** `PRISM_GENAI_HACKATHON_Y2026`  
-> **Full Demo Video (with Voiceover):** [`demo/out/final_submission_with_voice.mp4`](DEMO.mp4) (04:30 min, 1440x900 @ 30fps)
+> **Full Demo Video (with Voiceover):** [`DEMO.mp4`](DEMO.mp4) (04:30 min, 1440x900 @ 30fps)
 
 <p align="center">
   <img src="docs/images/01_title_banner.png" alt="Samsung Gen AI Hackathon Theme 05 Demo Banner" width="95%" />
