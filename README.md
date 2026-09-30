@@ -126,23 +126,64 @@ Results below are from the best completed run (`logs/baseline_20260930_201711`),
 
 ---
 
-## 6. Extension Use Case
+## 6. Extension Use Case — In-Car Voice Navigation Assistant
 
-### Voice Agent Across FDB-v3's 4 Domains (Tool-Selection Mid-Utterance Correction)
+### What It Is
 
-The agent's architecture naturally supports the FDB-v3 **state-rollback** and **disfluency correction** test cases across all four domains (ecommerce, finance, housing, travel/identity). The extension demonstrated is mid-utterance tool-request cancellation, where a user begins a request, immediately self-corrects (e.g., *"Wait, no — not that order, track order XYZ88 instead"*), and the agent must discard the stale intent and call the correct tool with the revised argument.
+[`extension_demo.py`](./extension_demo.py) is a standalone voice assistant demo
+for an in-car navigation scenario. It reuses the same LiveKit + Gemini Native
+Realtime stack as the benchmark agent but with a completely different set of
+**mock tools** focused on navigation:
 
-This is evaluated via FDB-v3 `state_rollback_test: true` scenarios in `benchmark_data_v2.json`. The agent code in `lk_agent_tool.py` handles this natively because Gemini Native Realtime processes audio end-to-end — there is no intermediate text buffer to flush, so mid-utterance corrections are seen by the model as they happen.
+| Tool | What It Does (Mock) |
+|:-----|:--------------------|
+| `navigate_to(destination)` | Logs "navigation started to {destination}" — no real routing |
+| `cancel_navigation()` | Logs "navigation cancelled" and clears the active destination |
+| `get_eta()` | Returns a hardcoded ETA if a destination is active, otherwise "no active navigation" |
 
-**To run the extension demo scenario (ecommerce_01 probe):**
+All tool calls are **logging only** — no real navigation, GPS, or map integration
+occurs. Every call is appended as a JSON line to `logs/extension_tool_calls.log`
+and printed to the terminal.
+
+### Key Behavior: Mid-Utterance Self-Correction
+
+The assistant is prompted to:
+
+1. **Wait** until the driver finishes speaking before calling any tool.
+2. **Use only the corrected destination** when the driver changes their mind
+   mid-sentence (e.g., *"Take me to the mall — no wait, go to the office"*).
+3. **Cancel then re-navigate** when changing an active destination.
+4. **Ignore fillers** ("um", "uh", "hold on", "let me think") — treat them as
+   pauses, not cancellation commands.
+
+### How to Run
+
 ```bash
-# Windows PowerShell
-.\reproduce.ps1
+# 1. Activate the venv and ensure .env is configured (LIVEKIT_URL,
+#    LIVEKIT_API_KEY, LIVEKIT_API_SECRET, GOOGLE_API_KEY)
+.\venv\Scripts\Activate.ps1
 
-# Linux / Bash
-./reproduce.sh
+# 2. Start the extension worker (dev mode)
+python extension_demo.py dev
+
+# 3. Open the LiveKit Agents Playground for your LiveKit Cloud project,
+#    join a room, and speak to the assistant.
 ```
-The run scripts evaluate all available scenarios including those with rollback tests. Refer to `logs/baseline_20260930_201711/` for per-scenario result JSONs.
+
+### Where the Log Is Written
+
+Tool calls are appended to:
+```
+logs/extension_tool_calls.log
+```
+Each line is a JSON object with a timestamp, event name, and tool arguments.
+
+### Limitation: Must Not Run Alongside the Benchmark Worker
+
+Both `extension_demo.py` and `lk_agent_tool.py` register as workers on the same
+LiveKit Cloud project. Running both simultaneously causes room-dispatch conflicts
+and will corrupt benchmark results. **Always stop one before starting the other.**
+
 
 ---
 
