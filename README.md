@@ -97,9 +97,6 @@ The system is evaluated as an **interactive agent, not just a chatbot**.
  Agent audio reply ──► LiveKit Room ──► User
 ```
 
-<p align="center">
-  <img src="docs/images/02_architecture_diagram.png" alt="System Architecture: Gemini Native Realtime on LiveKit WebRTC" width="95%" />
-</p>
 
 **Key point:** VAD, barge-in handling, and interruption of spoken output are *native model capabilities* here — there is no separate VAD component, no intermediate text transcription, and no TTS stage to coordinate.
 
@@ -225,16 +222,6 @@ The Gemini Native Realtime agent filtered the fillers, identified the intended t
 ### Quantitative Evaluation Summary Table
 
 **Model:** `gemini-2.5-flash-native-audio-preview-12-2025` · **Evaluation:** exact-match (no paid API keys)
-
-| Metric | Value | Detail |
-|:---|:---|:---|
-| **Strict Pass Rate** | **0.667** | 10 / 15 scenarios passed with all required tool calls and correct arguments |
-| **Tool Selection F1** | **0.759** | TP = 11, FP = 0, FN = 7 |
-| **Tool Selection Precision** | **1.000** | **Zero hallucinated tool calls** across all evaluated scenarios |
-| **Tool Selection Recall** | **0.611** | Failures were confined to missed invocations; never false triggers |
-| **Avg Response Latency** | **10.43 s** | User speech end → first agent audio token (n = 10, excludes no-response) |
-| **Latency Range** | 5.24 s – 18.32 s | Observed min / max across measured conversational scenarios |
-| **Response Quality (LLM judge)** | not computed | Requires `OPENAI_API_KEY`; exact-match evaluation is primary |
 
 <p align="center">
   <img src="docs/images/05_benchmark_exact_match_table.png" alt="Quantitative Benchmark Results (Tool F1 0.759, Precision 1.000)" width="95%" />
@@ -441,7 +428,7 @@ Copy [`.env.example`](.env.example) → `.env`:
 - **Observable agent execution** — every tool call and latency breakdown is logged and auditable
 - **Reproducible evaluation pipeline** — one command reruns inference + scoring end-to-end
 
-### Limitations (stated honestly)
+### Limitations 
 
 - The full 100-item run was constrained by CPU load in the current environment
 - 10.43 s average latency shows further responsiveness work is needed
@@ -480,18 +467,7 @@ The path from benchmark-ready prototype → production-grade conversational agen
 
 ---
 
-## 14. Demonstration Video & Voiceover
-
-- **Final Submission Video (With Synchronized Voiceover):** [`demo/out/final_submission_with_voice.mp4`](demo/out/final_submission_with_voice.mp4)
-  - **Resolution:** 1440x900 progressive @ 30 fps
-  - **Exact Duration:** `00:04:30.00` (270.000 seconds)
-  - **Audio Track:** 48 kHz stereo AAC, normalized to -16 LUFS broadcast standard
-- **Silent Screen Recording:** [`demo/out/demo_silent.mp4`](demo/out/demo_silent.mp4)
-- **Timestamped Voiceover Guide:** [`demo/VOICEOVER.md`](demo/VOICEOVER.md) (Full script with second-by-second visual cues and teleprompter view)
-
----
-
-## 15. Models & Providers (Citations)
+## 14. Models & Providers (Citations)
 
 - **LiveKit Agents SDK:**  
   LiveKit. *LiveKit Agents: Framework for real-time multimodal AI*. (2024). https://github.com/livekit/agents
@@ -506,7 +482,7 @@ The path from benchmark-ready prototype → production-grade conversational agen
 
 ---
 
-## 16. Known Issues & Troubleshooting
+## 15. Known Issues & Troubleshooting
 
 Development blockers and their resolutions are tracked in [NOTES.md](NOTES.md). Quick reference:
 
