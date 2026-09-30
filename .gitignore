@@ -1,0 +1,70 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Virtual environments
+venv/
+.venv/
+env/
+fdb/
+ENV/
+env.bak/
+venv.bak/
+
+# Python cache & build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Benchmark audio datasets & media files
+fdb_v3_data_released/
+data/
+*.wav
+*.mp3
+*.flac
+*.m4a
+*.ogg
+*.webm
+
+# Large outputs, inference logs, and evaluation dumps
+logs/*.log
+logs/*.json
+logs/*.jsonl
+outputs/
+results/
+eval_results/
+benchmark_output/
+*.tar.gz
+*.zip
+*.7z
+
+# Testing & type checking
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
