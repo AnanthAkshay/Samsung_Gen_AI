@@ -1,0 +1,40 @@
+{
+  "benchmark_name": "In-the-Wild Speech & Multi-Step Tool Calling (FDB-v3)",
+  "provider": "gemini2_5",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "evaluated_at": "2026-09-30T21:33:00+05:30",
+  "evaluation_mode": "exact-match (no LLM judge)",
+  "run_source": "logs/baseline_20260930_201711",
+  "completion_status": "PARTIAL — 15 of 100 scenarios completed; run aborted due to worker CPU load threshold (see NOTES.md ERR-004)",
+  "scenarios_completed": 15,
+  "scenarios_total": 100,
+  "domains_covered": ["ecommerce_support", "finance", "housing", "travel_identity"],
+  "metrics": {
+    "strict_pass_rate": 0.6667,
+    "passed": 10,
+    "failed": 5,
+    "tool_selection_f1": 0.7586,
+    "tool_selection_precision": 1.0,
+    "tool_selection_recall": 0.6111,
+    "true_positives": 11,
+    "false_positives": 0,
+    "false_negatives": 7,
+    "no_response_count": 5,
+    "response_quality_llm_judge": null,
+    "response_quality_note": "Requires OPENAI_API_KEY and --use-llm flag; not computed"
+  },
+  "latency": {
+    "samples": 10,
+    "avg_response_latency_s": 10.43,
+    "min_latency_s": 5.24,
+    "max_latency_s": 18.32,
+    "note": "Time from user speech end to first agent audio token; excludes no-response samples"
+  },
+  "failure_analysis": {
+    "FAIL_ecommerce_05": {"expected": ["search_products"], "actual": [], "reason": "no-response"},
+    "FAIL_ecommerce_11": {"expected": ["add_to_cart"], "actual": [], "reason": "no-response"},
+    "FAIL_ecommerce_12": {"expected": ["search_products"], "actual": [], "reason": "no-response"},
+    "FAIL_ecommerce_13_speaker_1": {"expected": ["add_to_cart", "track_order"], "actual": [], "reason": "no-response"},
+    "FAIL_ecommerce_13_speaker_2": {"expected": ["add_to_cart", "track_order"], "actual": [], "reason": "no-response"}
+  }
+}
