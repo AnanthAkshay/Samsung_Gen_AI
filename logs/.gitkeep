@@ -1,0 +1,2 @@
+# Keep logs folder in git tracking
+# Actual *.log, *.json, *.jsonl files are ignored via .gitignore

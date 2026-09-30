@@ -1,0 +1,256 @@
+{
+  "pid": "66c4f3cb14cbfc4db836bd4e",
+  "example_id": "ecommerce_06",
+  "category": "ecommerce_support",
+  "title": "Simple Cart Addition",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-09-30T19:53:48.948457",
+  "inference_time_s": 53.77,
+  "room_name": "eval-f0e46d02",
+  "stream_start_time": 1790778233.056204,
+  "input_transcript": "Mm, uh, so I'd like could you add two item two of the items K2 to my cart. I I need one for me and and one as a gift for my friend.",
+  "input_asr_chunks": [
+    {
+      "text": "Mm,",
+      "timestamp": [
+        0.56,
+        0.96
+      ]
+    },
+    {
+      "text": "uh,",
+      "timestamp": [
+        1.36,
+        1.52
+      ]
+    },
+    {
+      "text": "so",
+      "timestamp": [
+        1.84,
+        2.0
+      ]
+    },
+    {
+      "text": "I'd",
+      "timestamp": [
+        2.08,
+        2.4
+      ]
+    },
+    {
+      "text": "like",
+      "timestamp": [
+        2.4,
+        2.64
+      ]
+    },
+    {
+      "text": "could",
+      "timestamp": [
+        3.12,
+        3.36
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        3.68,
+        4.0
+      ]
+    },
+    {
+      "text": "add",
+      "timestamp": [
+        4.0,
+        4.32
+      ]
+    },
+    {
+      "text": "two",
+      "timestamp": [
+        4.4,
+        4.72
+      ]
+    },
+    {
+      "text": "item",
+      "timestamp": [
+        4.72,
+        5.2
+      ]
+    },
+    {
+      "text": "two",
+      "timestamp": [
+        6.16,
+        6.4
+      ]
+    },
+    {
+      "text": "of",
+      "timestamp": [
+        6.4,
+        6.5600000000000005
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        6.640000000000001,
+        6.8
+      ]
+    },
+    {
+      "text": "items",
+      "timestamp": [
+        6.8,
+        7.12
+      ]
+    },
+    {
+      "text": "K2",
+      "timestamp": [
+        7.28,
+        7.84
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        8.08,
+        8.32
+      ]
+    },
+    {
+      "text": "my",
+      "timestamp": [
+        8.32,
+        8.56
+      ]
+    },
+    {
+      "text": "cart.",
+      "timestamp": [
+        8.56,
+        9.040000000000001
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        9.68,
+        9.76
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        9.92,
+        10.16
+      ]
+    },
+    {
+      "text": "need",
+      "timestamp": [
+        10.16,
+        10.48
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        10.48,
+        10.72
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        10.72,
+        11.040000000000001
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        11.040000000000001,
+        11.28
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        11.36,
+        11.6
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        11.68,
+        12.0
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        12.0,
+        12.32
+      ]
+    },
+    {
+      "text": "as",
+      "timestamp": [
+        12.32,
+        12.56
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        12.56,
+        12.8
+      ]
+    },
+    {
+      "text": "gift",
+      "timestamp": [
+        12.8,
+        13.200000000000001
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        13.200000000000001,
+        13.44
+      ]
+    },
+    {
+      "text": "my",
+      "timestamp": [
+        13.44,
+        13.76
+      ]
+    },
+    {
+      "text": "friend.",
+      "timestamp": [
+        13.76,
+        14.16
+      ]
+    }
+  ],
+  "user_speech_end_rel": 14.16,
+  "latency": {
+    "input_duration_s": 44.528,
+    "output_duration_s": 44.528,
+    "first_speech_s": 44.528
+  },
+  "user_done_unix": 1790778247.2162042,
+  "transcript": "",
+  "asr_chunks": [],
+  "actual_tool_calls": [],
+  "status": "completed"
+}
