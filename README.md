@@ -497,3 +497,13 @@ Development blockers and their resolutions are tracked in [NOTES.md](NOTES.md). 
 
 ---
 
+<div align="center">
+
+**Samsung Gen AI Hackathon 3.0** · Theme 05 — Interruptible Real-Time Agents
+
+**Team Cache_Me — M S Ramaiah Institute of Technology (MSRIT)**
+
+Akshay A · Aaditya V · H M Pranav · Tejas M
+
+</div>
+
