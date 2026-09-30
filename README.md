@@ -28,10 +28,12 @@ A low-latency, full-duplex conversational voice agent that understands spontaneo
 9. [Docker Containerized Reproduction](#9-docker-containerized-reproduction)
 10. [Manual Pipeline Walkthrough](#10-manual-pipeline-walkthrough)
 11. [Configuration & API Keys](#11-configuration--api-keys)
-12. [Demonstration Video & Voiceover](#12-demonstration-video--voiceover)
-13. [Models & Providers (Citations)](#13-models--providers-citations)
-14. [Known Issues & Troubleshooting](#14-known-issues--troubleshooting)
-15. [Final Submission Tag Instructions](#15-final-submission-tag-instructions)
+12. [Innovation Highlights & Limitations](#12-innovation-highlights--limitations)
+13. [Roadmap — What's Next](#13-roadmap--whats-next)
+14. [Demonstration Video & Voiceover](#14-demonstration-video--voiceover)
+15. [Models & Providers (Citations)](#15-models--providers-citations)
+16. [Known Issues & Troubleshooting](#16-known-issues--troubleshooting)
+17. [Final Submission Tag Instructions](#17-final-submission-tag-instructions)
 
 ---
 
@@ -40,6 +42,28 @@ A low-latency, full-duplex conversational voice agent that understands spontaneo
 Real conversations are messy. Speakers pause mid-sentence, say "um", change their mind ("book to the mall — no wait, the office"), and interrupt the agent before it finishes. FDB-v3 measures exactly this: can a voice agent wait for the right moment, ignore disfluencies, and still fire the correct sequence of tool calls with correct arguments?
 
 This submission answers with a **fully native approach**: instead of a cascaded STT → LLM → TTS pipeline (which serializes speech through rigid text transcripts and adds latency at every stage), a single end-to-end audio model — **Gemini 2.5 Flash Native Audio** — handles speech understanding, turn-taking, interruption, intent detection, function calling, and spoken responses in one model pass.
+
+**Design principle: the conversation should remain alive while the agent works.**
+
+### Where interruptible voice agents matter
+
+| Domain | Why interruption & correction are essential |
+|:---|:---|
+| 🚗 **Driving** | Hands-free requests where users frequently interrupt or redirect |
+| 🛒 **Shopping** | Change products, quantities, filters and preferences mid-conversation |
+| ✈️ **Travel** | Modify destinations, dates, passengers or booking preferences while planning |
+| 💼 **Productivity** | Voice workflows where users naturally add, correct and reprioritize tasks |
+
+*These are intended use cases — not current production deployments.*
+
+### Why this approach is different
+
+1. **Native realtime** — no separate ASR → LLM → TTS cascade; one end-to-end audio model.
+2. **Real tool interaction** — the agent does not stop at generating text; it interacts with tools.
+3. **Disfluency-aware evaluation** — the benchmark contains false starts, self-corrections, disfluencies and interruptions.
+4. **Measured, not assumed** — we instrument F1, precision, recall, strict pass rate, and latency.
+
+The system is evaluated as an **interactive agent, not just a chatbot**.
 
 | Design decision | Rationale |
 |:---|:---|
@@ -217,6 +241,8 @@ The Gemini Native Realtime agent filtered the fillers, identified the intended t
 </p>
 
 **Key takeaway:** The standout signal is **perfect precision (1.000)**: the agent never hallucinated or triggered false-positive tool calls, even under spontaneous speech disfluencies.
+
+> **Note:** these figures are **team reproduction / partial-run numbers — not official organizer scoring.** The organizers' benchmark rerun determines the official score.
 
 ---
 
@@ -405,7 +431,56 @@ Copy [`.env.example`](.env.example) → `.env`:
 
 ---
 
-## 12. Demonstration Video & Voiceover
+## 12. Innovation Highlights & Limitations
+
+### Innovation highlights
+
+- **Native realtime audio architecture** — one end-to-end model for listening, reasoning, and speaking
+- **Function / tool interaction** — structured multi-step tool calls, not just conversation
+- **Benchmark-driven development** — every design choice validated against FDB-v3 scenarios
+- **Observable agent execution** — every tool call and latency breakdown is logged and auditable
+- **Reproducible evaluation pipeline** — one command reruns inference + scoring end-to-end
+
+### Limitations (stated honestly)
+
+- The full 100-item run was constrained by CPU load in the current environment
+- 10.43 s average latency shows further responsiveness work is needed
+- Explicit application-level stale-call cancellation / rollback is not yet fully implemented
+- Benchmark rerun by organizers determines the official score
+
+---
+
+## 13. Roadmap — What's Next
+
+The path from benchmark-ready prototype → production-grade conversational agent, in three stages:
+
+### 01 · Interruption control
+
+- Explicit intent state
+- Stale-intent detection
+- Cancellation of superseded work
+- State snapshots
+- Re-planning
+
+### 02 · Responsiveness
+
+- Isolate tool execution
+- Eliminate event-loop blocking
+- Optimize schema initialization
+- Improve first-response latency
+- Reduce CPU contention
+
+### 03 · Production readiness
+
+- Real-world APIs
+- Multimodal grounding
+- Persistent state
+- Long-running asynchronous jobs
+- Robust failure recovery
+
+---
+
+## 14. Demonstration Video & Voiceover
 
 - **Final Submission Video (With Synchronized Voiceover):** [`demo/out/final_submission_with_voice.mp4`](demo/out/final_submission_with_voice.mp4)
   - **Resolution:** 1440x900 progressive @ 30 fps
@@ -416,7 +491,7 @@ Copy [`.env.example`](.env.example) → `.env`:
 
 ---
 
-## 13. Models & Providers (Citations)
+## 15. Models & Providers (Citations)
 
 - **LiveKit Agents SDK:**  
   LiveKit. *LiveKit Agents: Framework for real-time multimodal AI*. (2024). https://github.com/livekit/agents
@@ -431,7 +506,9 @@ Copy [`.env.example`](.env.example) → `.env`:
 
 ---
 
-## 14. Known Issues & Troubleshooting
+## 16. Known Issues & Troubleshooting
+
+Development blockers and their resolutions are tracked in [NOTES.md](NOTES.md). Quick reference:
 
 | Symptom | Fix |
 |:---|:---|
@@ -444,7 +521,7 @@ Copy [`.env.example`](.env.example) → `.env`:
 
 ---
 
-## 15. Final Submission Tag Instructions
+## 17. Final Submission Tag Instructions
 
 Per the Samsung PRISM Gen AI Hackathon submission guidelines, tag and push the final commit:
 
