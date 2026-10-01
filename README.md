@@ -47,14 +47,14 @@ This submission answers with a **fully native approach**: instead of a cascaded 
 
 ### Where interruptible voice agents matter
 
-| Domain | Why interruption & correction are essential |
-|:---|:---|
-| 🚗 **Driving** | Hands-free requests where users frequently interrupt or redirect |
-| 🛒 **Shopping** | Change products, quantities, filters and preferences mid-conversation |
-| ✈️ **Travel** | Modify destinations, dates, passengers or booking preferences while planning |
-| 💼 **Productivity** | Voice workflows where users naturally add, correct and reprioritize tasks |
+| Domain              | Why interruption & correction are essential                                  |
+| :------------------ | :--------------------------------------------------------------------------- |
+| 🚗 **Driving**      | Hands-free requests where users frequently interrupt or redirect             |
+| 🛒 **Shopping**     | Change products, quantities, filters and preferences mid-conversation        |
+| ✈️ **Travel**       | Modify destinations, dates, passengers or booking preferences while planning |
+| 💼 **Productivity** | Voice workflows where users naturally add, correct and reprioritize tasks    |
 
-*These are intended use cases — not current production deployments.*
+_These are intended use cases — not current production deployments._
 
 ### Why this approach is different
 
@@ -65,12 +65,12 @@ This submission answers with a **fully native approach**: instead of a cascaded 
 
 The system is evaluated as an **interactive agent, not just a chatbot**.
 
-| Design decision | Rationale |
-|:---|:---|
+| Design decision                                          | Rationale                                                                                                                                   |
+| :------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Native realtime (Gemini Live) over cascaded pipeline** | ~4.25 s vs ~10.12 s published latency; zero paid API keys for agent runtime; native disfluency handling (see [NOTES.md](NOTES.md) ARCH-001) |
-| **LiveKit Cloud WebRTC transport** | Production-grade real-time audio, free tier, built-in room dispatch |
-| **Exact-match evaluation (no LLM judge)** | Reported metrics reproducible **without any paid API key** |
-| **Mock tool backends** | Deterministic, auditable tool behavior with configurable latency profiles |
+| **LiveKit Cloud WebRTC transport**                       | Production-grade real-time audio, free tier, built-in room dispatch                                                                         |
+| **Exact-match evaluation (no LLM judge)**                | Reported metrics reproducible **without any paid API key**                                                                                  |
+| **Mock tool backends**                                   | Deterministic, auditable tool behavior with configurable latency profiles                                                                   |
 
 ---
 
@@ -97,23 +97,22 @@ The system is evaluated as an **interactive agent, not just a chatbot**.
  Agent audio reply ──► LiveKit Room ──► User
 ```
 
-
-**Key point:** VAD, barge-in handling, and interruption of spoken output are *native model capabilities* here — there is no separate VAD component, no intermediate text transcription, and no TTS stage to coordinate.
+**Key point:** VAD, barge-in handling, and interruption of spoken output are _native model capabilities_ here — there is no separate VAD component, no intermediate text transcription, and no TTS stage to coordinate.
 
 ### Primary components
 
-| Component | File | Role |
-|:---|:---|:---|
-| Agent worker | [`Full-Duplex-Bench/v3/lk_agent_tool.py`](Full-Duplex-Bench/v3/lk_agent_tool.py) | LiveKit agent with swappable realtime providers (`LK_PROVIDER=gemini2_5` selects Gemini); per-call latency breakdown logging |
-| Tool backends | [`Full-Duplex-Bench/v3/mock_apis.py`](Full-Duplex-Bench/v3/mock_apis.py) | 12 deterministic mock tools across 4 domains, with a call logger |
-| Latency simulation | [`Full-Duplex-Bench/v3/latency_injector.py`](Full-Duplex-Bench/v3/latency_injector.py) | Configurable per-tool API latency profiles (e.g. `instant`) |
-| Benchmark runner | [`Full-Duplex-Bench/v3/run_tool_benchmark_all_released.py`](Full-Duplex-Bench/v3/run_tool_benchmark_all_released.py) | Streams each benchmark WAV through a LiveKit room, captures agent audio, records tool calls |
-| LiveKit client | [`Full-Duplex-Bench/v3/livekit_inference.py`](Full-Duplex-Bench/v3/livekit_inference.py) | Headless LiveKit client for streaming benchmark audio |
-| ASR (evaluation only) | NVIDIA Parakeet TDT 0.6B v2 via [`run_tool_benchmark.py`](Full-Duplex-Bench/v3/run_tool_benchmark.py) | Transcribes agent responses for latency measurement and tool-call extraction — **not part of the agent runtime** |
-| Evaluators | [`evaluate_tool_calls.py`](Full-Duplex-Bench/v3/evaluate_tool_calls.py), [`evaluate_pass_rate.py`](Full-Duplex-Bench/v3/evaluate_pass_rate.py), [`analyze_tool_latency.py`](Full-Duplex-Bench/v3/analyze_tool_latency.py) | F1 / pass-rate / latency scoring; exact-match by default, optional GPT-4o judge via `--use-llm` |
-| Cascaded baseline | [`Full-Duplex-Bench/v3/cascaded_agent.py`](Full-Duplex-Bench/v3/cascaded_agent.py) | Kept for comparison: Silero VAD + Whisper STT + GPT-4o + OpenAI TTS |
-| Extension demo | [`extension_demo.py`](extension_demo.py) | Standalone in-car navigation assistant (see §6) |
-| Reproduction scripts | [`reproduce.sh`](reproduce.sh) / [`reproduce.ps1`](reproduce.ps1) | One-command end-to-end pipeline (Linux/macOS / Windows) |
+| Component             | File                                                                                                                                                                                                                      | Role                                                                                                                         |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------- |
+| Agent worker          | [`Full-Duplex-Bench/v3/lk_agent_tool.py`](Full-Duplex-Bench/v3/lk_agent_tool.py)                                                                                                                                          | LiveKit agent with swappable realtime providers (`LK_PROVIDER=gemini2_5` selects Gemini); per-call latency breakdown logging |
+| Tool backends         | [`Full-Duplex-Bench/v3/mock_apis.py`](Full-Duplex-Bench/v3/mock_apis.py)                                                                                                                                                  | 12 deterministic mock tools across 4 domains, with a call logger                                                             |
+| Latency simulation    | [`Full-Duplex-Bench/v3/latency_injector.py`](Full-Duplex-Bench/v3/latency_injector.py)                                                                                                                                    | Configurable per-tool API latency profiles (e.g. `instant`)                                                                  |
+| Benchmark runner      | [`Full-Duplex-Bench/v3/run_tool_benchmark_all_released.py`](Full-Duplex-Bench/v3/run_tool_benchmark_all_released.py)                                                                                                      | Streams each benchmark WAV through a LiveKit room, captures agent audio, records tool calls                                  |
+| LiveKit client        | [`Full-Duplex-Bench/v3/livekit_inference.py`](Full-Duplex-Bench/v3/livekit_inference.py)                                                                                                                                  | Headless LiveKit client for streaming benchmark audio                                                                        |
+| ASR (evaluation only) | NVIDIA Parakeet TDT 0.6B v2 via [`run_tool_benchmark.py`](Full-Duplex-Bench/v3/run_tool_benchmark.py)                                                                                                                     | Transcribes agent responses for latency measurement and tool-call extraction — **not part of the agent runtime**             |
+| Evaluators            | [`evaluate_tool_calls.py`](Full-Duplex-Bench/v3/evaluate_tool_calls.py), [`evaluate_pass_rate.py`](Full-Duplex-Bench/v3/evaluate_pass_rate.py), [`analyze_tool_latency.py`](Full-Duplex-Bench/v3/analyze_tool_latency.py) | F1 / pass-rate / latency scoring; exact-match by default, optional GPT-4o judge via `--use-llm`                              |
+| Cascaded baseline     | [`Full-Duplex-Bench/v3/cascaded_agent.py`](Full-Duplex-Bench/v3/cascaded_agent.py)                                                                                                                                        | Kept for comparison: Silero VAD + Whisper STT + GPT-4o + OpenAI TTS                                                          |
+| Extension demo        | [`extension_demo.py`](extension_demo.py)                                                                                                                                                                                  | Standalone in-car navigation assistant (see §6)                                                                              |
+| Reproduction scripts  | [`reproduce.sh`](reproduce.sh) / [`reproduce.ps1`](reproduce.ps1)                                                                                                                                                         | One-command end-to-end pipeline (Linux/macOS / Windows)                                                                      |
 
 ---
 
@@ -136,8 +135,11 @@ The system is evaluated as an **interactive agent, not just a chatbot**.
 │       └── final_submission_with_voice.mp4  Rendered 4:30 submission demo video
 ├── tests/
 │   └── test_extension_tools.py      Offline unit tests for extension tool logic
-├── logs/                            Evaluation outputs & run artifacts (gitignored except summary)
-│   └── gemini2_5_summary_metrics.json   Best completed run's summary metrics
+├── logs/                            Evaluation outputs (100-scenario reports are committed)
+│   └── baseline_final_20261001_020033/
+│       ├── pass_rate_report.json    Strict per-scenario pass/fail results
+│       ├── summary_metrics.json     Validated 100-scenario aggregate
+│       └── tool_calls_report.json   Per-scenario F1, arguments, and latency
 └── Full-Duplex-Bench/               Vendored FDB benchmark (v1/v1.5, v2, v3)
     └── v3/                          Active benchmark version — all pipeline code lives here
         ├── lk_agent_tool.py             Agent worker (swappable realtime providers)
@@ -149,6 +151,7 @@ The system is evaluated as an **interactive agent, not just a chatbot**.
         ├── run_tool_benchmark_all_released.py   Batch inference over all scenarios
         ├── evaluate_tool_calls.py       Tool selection F1 / argument accuracy
         ├── evaluate_pass_rate.py        Strict binary pass rate
+        ├── summarize_evaluation.py      Validated aggregate summary writer
         ├── analyze_tool_latency.py      Fine-grained latency analysis
         ├── benchmark_data_v2.json       Scenario definitions (79 scenarios)
         └── fdb_v3_data_released/        Benchmark audio (downloaded — see §7)
@@ -168,12 +171,12 @@ FDB-v3 evaluates voice agents on **multi-step tool calling under real-world disf
 - **Human-recorded audio** with natural hesitations, filler words, and mid-utterance self-corrections
 - **12 available tools** the agent may call:
 
-| Domain | Tools |
-|:---|:---|
-| Travel & Identity | `search_flights`, `book_flight`, `update_identity_doc` |
-| Finance & Billing | `get_card_benefits`, `get_exchange_rate`, `modify_autopay` |
+| Domain             | Tools                                                            |
+| :----------------- | :--------------------------------------------------------------- |
+| Travel & Identity  | `search_flights`, `book_flight`, `update_identity_doc`           |
+| Finance & Billing  | `get_card_benefits`, `get_exchange_rate`, `modify_autopay`       |
 | Housing & Location | `search_apartments`, `calculate_commute`, `update_search_filter` |
-| E-Commerce | `track_order`, `search_products`, `add_to_cart` |
+| E-Commerce         | `track_order`, `search_products`, `add_to_cart`                  |
 
 ### How a scenario is run
 
@@ -185,13 +188,13 @@ FDB-v3 evaluates voice agents on **multi-step tool calling under real-world disf
 
 ### Metrics
 
-| Metric | What it measures |
-|:---|:---|
-| **Tool Selection F1** | Harmonic mean of precision (no hallucinated calls) and recall (no missed calls) over expected tool names |
-| **Argument Accuracy** | Correctness of arguments — exact string match by default; semantic via optional GPT-4o judge |
-| **Strict Pass Rate** | Scenario passes only if **all** expected tools were called with correct arguments (no missing, extra, or wrong) |
-| **Response Quality** | Optional GPT-4o judge score (`--use-llm` only; requires `OPENAI_API_KEY`) |
-| **Latency** | Time from end of user speech to agent's first audio token; plus tool-call and task-completion latency |
+| Metric                | What it measures                                                                                                |
+| :-------------------- | :-------------------------------------------------------------------------------------------------------------- |
+| **Tool Selection F1** | Harmonic mean of precision (no hallucinated calls) and recall (no missed calls) over expected tool names        |
+| **Argument Accuracy** | Correctness of arguments — exact string match by default; semantic via optional GPT-4o judge                    |
+| **Strict Pass Rate**  | Scenario passes only if **all** expected tools were called with correct arguments (no missing, extra, or wrong) |
+| **Response Quality**  | Optional GPT-4o judge score (`--use-llm` only; requires `OPENAI_API_KEY`)                                       |
+| **Latency**           | Time from end of user speech to agent's first audio token; plus tool-call and task-completion latency           |
 
 ### Integrity guarantees
 
@@ -203,39 +206,47 @@ FDB-v3 evaluates voice agents on **multi-step tool calling under real-world disf
 
 ## 5. Results & Benchmark Evidence
 
-> **Benchmark Execution Signal:** The live benchmark run (`logs/baseline_final_20261001_000607`) completed 28 of 29 processed cases with a **100% completion rate** and zero silent connection drops. The exact-match evaluation across domains demonstrated exceptional tool-calling precision.
+### Full 100-Scenario Baseline
+
+The complete run was evaluated from 100 scenario result files. Both repository evaluators were run in exact-match mode with no LLM judge. Their per-scenario reports and machine-readable aggregate are committed under [`logs/baseline_final_20261001_020033/`](logs/baseline_final_20261001_020033/).
+
+| Metric                           |               Result |
+| :------------------------------- | -------------------: |
+| Scenarios evaluated              |            100 / 100 |
+| Strict pass rate                 | **45 / 100 (45.0%)** |
+| Mean tool-selection F1           |                0.823 |
+| Mean argument accuracy           |                0.528 |
+| Mean response latency            |             11.732 s |
+| Strict failures: wrong tools     |                   34 |
+| Strict failures: wrong arguments |                   21 |
+
+Latency is averaged over non-interrupted responses; 5 of 100 samples were interruptions. The strict pass-rate categories account for all 55 failed scenarios. See [`summary_metrics.json`](logs/baseline_final_20261001_020033/summary_metrics.json), [`pass_rate_report.json`](logs/baseline_final_20261001_020033/pass_rate_report.json), and [`tool_calls_report.json`](logs/baseline_final_20261001_020033/tool_calls_report.json) for the aggregate and evaluator outputs. These are team reproduction results, not official organizer scoring.
+
+The earlier 15-case result is retained only as historical context in [`logs/gemini2_5_summary_metrics.json`](logs/gemini2_5_summary_metrics.json); it is not the headline result.
 
 <p align="center">
-  <img src="docs/images/03_benchmark_metrics_summary.png" alt="Live Benchmark Execution Summary (Full-Duplex-Bench v3)" width="95%" />
+  <img src="docs/images/03_benchmark_metrics_summary.png" alt="Benchmark Execution Summary (Full-Duplex-Bench v3)" width="95%" />
 </p>
 
 ### Detailed Scenario Walkthrough: `ecommerce_01`
-In scenario `ecommerce_01_65e8cf8f4c7424fa062e54a3`, the user input exhibits realistic hesitation and filler disfluency:
-> *"Like, uh, well, I ordered something last week and um, I haven't received it yet. Could you track it for me? The order ID is A B C one two three."*
 
-The Gemini Native Realtime agent filtered the fillers, identified the intended tool, extracted alphanumeric parameter `order_id="ABC123"`, executed `track_order`, and responded: *"Your order is currently out for delivery."*
+In scenario `ecommerce_01_65e8cf8f4c7424fa062e54a3`, the user input exhibits realistic hesitation and filler disfluency:
+
+> _"Like, uh, well, I ordered something last week and um, I haven't received it yet. Could you track it for me? The order ID is A B C one two three."_
+
+The Gemini Native Realtime agent filtered the fillers, identified the intended tool, extracted alphanumeric parameter `order_id="ABC123"`, executed `track_order`, and responded: _"Your order is currently out for delivery."_
 
 <p align="center">
   <img src="docs/images/04_scenario_ecommerce01_log.png" alt="Completed Benchmark Scenario: ecommerce_01 Disfluency & Tool Execution" width="95%" />
 </p>
 
-### Quantitative Evaluation Summary Table
-
-**Model:** `gemini-2.5-flash-native-audio-preview-12-2025` · **Evaluation:** exact-match (no paid API keys)
-
-<p align="center">
-  <img src="docs/images/05_benchmark_exact_match_table.png" alt="Quantitative Benchmark Results (Tool F1 0.759, Precision 1.000)" width="95%" />
-</p>
-
-**Key takeaway:** The standout signal is **perfect precision (1.000)**: the agent never hallucinated or triggered false-positive tool calls, even under spontaneous speech disfluencies.
-
-> **Note:** these figures are **team reproduction / partial-run numbers — not official organizer scoring.** The organizers' benchmark rerun determines the official score.
+The evaluator output uses exact-match scoring and no paid API key. The historical 15-scenario table image is not used as evidence for this full-run result. The organizers' benchmark rerun determines the official score.
 
 ---
 
 ## 6. Extension Demo — In-Car Voice Navigation Assistant
 
-[`extension_demo.py`](extension_demo.py) demonstrates the same LiveKit + Gemini Native Realtime stack applied to an automotive scenario: a driver-facing navigation assistant whose headline behavior is **mid-utterance destination correction** — *"Take me to the mall — no wait, go to the office"* must end up navigating to the office, and only the office.
+[`extension_demo.py`](extension_demo.py) demonstrates the same LiveKit + Gemini Native Realtime stack applied to an automotive scenario: a driver-facing navigation assistant whose headline behavior is **mid-utterance destination correction** — _"Take me to the mall — no wait, go to the office"_ must end up navigating to the office, and only the office.
 
 <p align="center">
   <img src="docs/images/06_extension_worker_boot.png" alt="Extension Worker Initialized on LiveKit WebRTC" width="95%" />
@@ -243,11 +254,11 @@ The Gemini Native Realtime agent filtered the fillers, identified the intended t
 
 ### Tools (all mock — logging only, no real GPS or routing)
 
-| Tool | Behavior |
-|:---|:---|
-| `navigate_to(destination)` | Records the destination as active in session state |
-| `cancel_navigation()` | Clears the active destination |
-| `get_eta()` | Returns an ETA if navigation is active, otherwise "no active navigation" |
+| Tool                       | Behavior                                                                 |
+| :------------------------- | :----------------------------------------------------------------------- |
+| `navigate_to(destination)` | Records the destination as active in session state                       |
+| `cancel_navigation()`      | Clears the active destination                                            |
+| `get_eta()`                | Returns an ETA if navigation is active, otherwise "no active navigation" |
 
 ### Prompted behaviors
 
@@ -259,28 +270,36 @@ The Gemini Native Realtime agent filtered the fillers, identified the intended t
 ### Real-World Disfluency Test Suite
 
 #### Clip 1: Destination Self-Correction
-*Driver Audio:* *"Navigate to Koramangala. No wait, take me to Indiranagar instead."*  
-*Result:* Agent suppresses Koramangala, invokes `cancel_navigation`, and calls `navigate_to("Indiranagar")`.
+
+_Driver Audio:_ _"Navigate to Koramangala. No wait, take me to Indiranagar instead."_
+_Result:_ Agent suppresses Koramangala, invokes `cancel_navigation`, and calls `navigate_to("Indiranagar")`.
+
 <p align="center">
   <img src="docs/images/07_extension_clip1_correction.png" alt="Clip 1: Mid-Utterance Destination Correction (Koramangala to Indiranagar)" width="95%" />
 </p>
 
 #### Clip 2: Mid-Utterance Cancellation
-*Driver Audio:* *"Take me to the airport. Actually, cancel that."*  
-*Result:* Agent detects the explicit cancellation, suppresses `navigate_to`, and leaves zero active routes.
+
+_Driver Audio:_ _"Take me to the airport. Actually, cancel that."_
+_Result:_ Agent detects the explicit cancellation, suppresses `navigate_to`, and leaves zero active routes.
+
 <p align="center">
   <img src="docs/images/08_extension_clip2_cancellation.png" alt="Clip 2: Mid-Utterance Cancellation (Airport to Cancel)" width="95%" />
 </p>
 
 #### Clip 3: Filler & Hesitation Tolerance
-*Driver Audio:* *"Navigate to M G Road. Um, hold on. Yes, M G Road."*  
-*Result:* Agent recognizes *"um, hold on"* as speech hesitation, triggers exactly one `navigate_to` call to MG Road without false cancellations.
+
+_Driver Audio:_ _"Navigate to M G Road. Um, hold on. Yes, M G Road."_
+_Result:_ Agent recognizes _"um, hold on"_ as speech hesitation, triggers exactly one `navigate_to` call to MG Road without false cancellations.
+
 <p align="center">
   <img src="docs/images/09_extension_clip3_hesitation.png" alt="Clip 3: Hesitation & Filler Word Rejection (MG Road)" width="95%" />
 </p>
 
 #### Extension Pass/Fail Audit Summary Table
+
 All interactions are audited directly from `logs/extension_tool_calls.log`:
+
 <p align="center">
   <img src="docs/images/10_extension_audit_table.png" alt="Extension Pass/Fail Summary Table across Disfluency Scenarios" width="95%" />
 </p>
@@ -291,12 +310,12 @@ All interactions are audited directly from `logs/extension_tool_calls.log`:
 
 ### Prerequisites
 
-| Requirement | Notes |
-|:---|:---|
-| **Python 3.10** | Required for Full-Duplex-Bench v3 NeMo/ASR compatibility |
-| **FFmpeg** | On `PATH`; used to transcode audio to 48 kHz mono 16-bit PCM |
-| **LiveKit Cloud account** | Free tier at [cloud.livekit.io](https://cloud.livekit.io) |
-| **Google AI Studio key** | Free tier at [aistudio.google.com](https://aistudio.google.com) |
+| Requirement               | Notes                                                           |
+| :------------------------ | :-------------------------------------------------------------- |
+| **Python 3.10**           | Required for Full-Duplex-Bench v3 NeMo/ASR compatibility        |
+| **FFmpeg**                | On `PATH`; used to transcode audio to 48 kHz mono 16-bit PCM    |
+| **LiveKit Cloud account** | Free tier at [cloud.livekit.io](https://cloud.livekit.io)       |
+| **Google AI Studio key**  | Free tier at [aistudio.google.com](https://aistudio.google.com) |
 
 ### Installation
 
@@ -349,12 +368,14 @@ The benchmark audio dataset (`fdb_v3_data_released/`, ~100 WAV files) is downloa
 </p>
 
 The reproduction script performs the full automated pipeline:
+
 1. **Environment validation** — verifies `GOOGLE_API_KEY` and LiveKit credentials.
 2. **Venv + dependencies** — initializes Python 3.10 environment.
 3. **Dataset extraction** — ensures benchmark audio files are present.
 4. **Agent worker boot** — starts the Gemini Native Realtime agent in the background.
 5. **Batch inference** — streams benchmark scenarios through WebRTC LiveKit rooms.
-6. **Evaluation** — computes exact-match tool F1 and pass-rate reports.
+6. **Evaluation** — computes exact-match tool F1 and pass-rate reports without an LLM judge.
+7. **Run summary** — writes `tool_calls_report.json`, `pass_rate_report.json`, and a validated `summary_metrics.json` under `logs/baseline_<timestamp>/`. Summary generation stops unless both evaluators cover all 100 benchmark scenarios.
 
 ---
 
@@ -405,16 +426,16 @@ python evaluate_pass_rate.py \
 
 Copy [`.env.example`](.env.example) → `.env`:
 
-| Variable | Required | Purpose |
-|:---|:---:|:---|
-| `LIVEKIT_URL` | ✅ | LiveKit Cloud room URL ([console](https://cloud.livekit.io)) |
-| `LIVEKIT_API_KEY` | ✅ | LiveKit authentication key |
-| `LIVEKIT_API_SECRET` | ✅ | LiveKit authentication secret |
-| `GOOGLE_API_KEY` | ✅ | Gemini Native Realtime agent ([AI Studio free tier](https://aistudio.google.com)) |
-| `LK_PROVIDER` | ✅ | Agent backend: `gemini2_5` (default) or `gemini3_1` |
-| `GOOGLE_VOICE` | – | Voice name (default `Puck`; also `Charon`, `Kore`, `Fenrir`, `Aoede`) |
-| `OPENAI_API_KEY` | – | **Optional.** GPT-4o LLM judge, only with `--use-llm` |
-| `EXT_VOICE` / `EXT_GEMINI_MODEL` | – | Override voice / model for `extension_demo.py` only |
+| Variable                         | Required | Purpose                                                                           |
+| :------------------------------- | :------: | :-------------------------------------------------------------------------------- |
+| `LIVEKIT_URL`                    |    ✅    | LiveKit Cloud room URL ([console](https://cloud.livekit.io))                      |
+| `LIVEKIT_API_KEY`                |    ✅    | LiveKit authentication key                                                        |
+| `LIVEKIT_API_SECRET`             |    ✅    | LiveKit authentication secret                                                     |
+| `GOOGLE_API_KEY`                 |    ✅    | Gemini Native Realtime agent ([AI Studio free tier](https://aistudio.google.com)) |
+| `LK_PROVIDER`                    |    ✅    | Agent backend: `gemini2_5` (default) or `gemini3_1`                               |
+| `GOOGLE_VOICE`                   |    –     | Voice name (default `Puck`; also `Charon`, `Kore`, `Fenrir`, `Aoede`)             |
+| `OPENAI_API_KEY`                 |    –     | **Optional.** GPT-4o LLM judge, only with `--use-llm`                             |
+| `EXT_VOICE` / `EXT_GEMINI_MODEL` |    –     | Override voice / model for `extension_demo.py` only                               |
 
 ---
 
@@ -428,7 +449,7 @@ Copy [`.env.example`](.env.example) → `.env`:
 - **Observable agent execution** — every tool call and latency breakdown is logged and auditable
 - **Reproducible evaluation pipeline** — one command reruns inference + scoring end-to-end
 
-### Limitations 
+### Limitations
 
 - The full 100-item run was constrained by CPU load in the current environment
 - 10.43 s average latency shows further responsiveness work is needed
@@ -470,15 +491,15 @@ The path from benchmark-ready prototype → production-grade conversational agen
 ## 14. Models & Providers (Citations)
 
 - **LiveKit Agents SDK:**  
-  LiveKit. *LiveKit Agents: Framework for real-time multimodal AI*. (2024). https://github.com/livekit/agents
+  LiveKit. _LiveKit Agents: Framework for real-time multimodal AI_. (2024). https://github.com/livekit/agents
 - **Google Gemini Native Realtime (`gemini-2.5-flash-native-audio-preview-12-2025`):**  
-  Google DeepMind. *Gemini 2.5 Flash: Multimodal Realtime API*. (2025). https://ai.google.dev/gemini-api/docs/live
+  Google DeepMind. _Gemini 2.5 Flash: Multimodal Realtime API_. (2025). https://ai.google.dev/gemini-api/docs/live
 - **Full-Duplex-Bench v3:**  
-  Lin, G.-T., Chen, C., Chen, Z., & Lee, H.-y. *Full-Duplex-Bench-v3: Benchmarking Tool Use for Full-Duplex Voice Agents Under Real-World Disfluency*. arXiv:2604.04847 (2026). https://github.com/DanielLin94144/Full-Duplex-Bench
+  Lin, G.-T., Chen, C., Chen, Z., & Lee, H.-y. _Full-Duplex-Bench-v3: Benchmarking Tool Use for Full-Duplex Voice Agents Under Real-World Disfluency_. arXiv:2604.04847 (2026). https://github.com/DanielLin94144/Full-Duplex-Bench
 - **NVIDIA Parakeet TDT 0.6B v2 (Evaluation ASR only):**  
-  NVIDIA. *parakeet-tdt-0.6b-v2*. (2024). https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2
+  NVIDIA. _parakeet-tdt-0.6b-v2_. (2024). https://huggingface.co/nvidia/parakeet-tdt-0.6b-v2
 - **Silero VAD (Cascaded baseline reference):**  
-  Silero Team. *Silero VAD*. (2021). https://github.com/snakers4/silero-vad
+  Silero Team. _Silero VAD_. (2021). https://github.com/snakers4/silero-vad
 
 ---
 
@@ -486,14 +507,14 @@ The path from benchmark-ready prototype → production-grade conversational agen
 
 Development blockers and their resolutions are tracked in [NOTES.md](NOTES.md). Quick reference:
 
-| Symptom | Fix |
-|:---|:---|
-| `ffmpeg is not recognized` / audio decode errors | Install FFmpeg and add its `bin` folder to `PATH` (NOTES.md ERR-001) |
-| `FileNotFoundError: /tmp/agent_*.log` on Windows | Create `C:\tmp`, or run from an environment where `/tmp` resolves (ERR-002) |
-| `UnicodeEncodeError: 'charmap' codec` on agent startup | Set `PYTHONUTF8=1` for agent and benchmark processes (ERR-006) |
-| `TarFile.extract() got an unexpected keyword argument 'filter'` | Python 3.10 + NeMo: `pip install backports.tarfile==1.2.0` (ERR-005) |
+| Symptom                                                                | Fix                                                                                                |
+| :--------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
+| `ffmpeg is not recognized` / audio decode errors                       | Install FFmpeg and add its `bin` folder to `PATH` (NOTES.md ERR-001)                               |
+| `FileNotFoundError: /tmp/agent_*.log` on Windows                       | Create `C:\tmp`, or run from an environment where `/tmp` resolves (ERR-002)                        |
+| `UnicodeEncodeError: 'charmap' codec` on agent startup                 | Set `PYTHONUTF8=1` for agent and benchmark processes (ERR-006)                                     |
+| `TarFile.extract() got an unexpected keyword argument 'filter'`        | Python 3.10 + NeMo: `pip install backports.tarfile==1.2.0` (ERR-005)                               |
 | Worker stops accepting jobs mid-run (`full capacity` / load threshold) | Reduce concurrency or use a dedicated machine; check `load` vs `threshold` in agent logs (ERR-004) |
-| Agent never joins room | Ensure only **one** worker (benchmark or extension) is running per LiveKit project |
+| Agent never joins room                                                 | Ensure only **one** worker (benchmark or extension) is running per LiveKit project                 |
 
 ---
 
@@ -506,4 +527,3 @@ Development blockers and their resolutions are tracked in [NOTES.md](NOTES.md). 
 Akshay A · Aaditya V · H M Pranav · Tejas M
 
 </div>
-

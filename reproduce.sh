@@ -92,34 +92,42 @@ sleep 5
 
 # 6. Run streaming benchmark inference
 echo " Running benchmark inference for provider ${LK_PROVIDER}..."
-python run_tool_benchmark_all_released.py --provider "${LK_PROVIDER}"
+python run_tool_benchmark_all_released.py --provider "${LK_PROVIDER}" --force
 
 # 7. Run evaluation
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+RUN_ID="baseline_${TIMESTAMP}"
+RUN_DIR="${SCRIPT_DIR}/logs/${RUN_ID}"
+SNAPSHOT_DIR="${RUN_DIR}/fdb_v3_data_released"
+mkdir -p "${RUN_DIR}"
+while IFS= read -r -d '' RESULT_FILE; do
+    RELATIVE_PATH="${RESULT_FILE#${DATA_DIR}/}"
+    mkdir -p "${SNAPSHOT_DIR}/$(dirname "${RELATIVE_PATH}")"
+    cp "${RESULT_FILE}" "${SNAPSHOT_DIR}/${RELATIVE_PATH}"
+done < <(find "${DATA_DIR}" -type f -name "result_${LK_PROVIDER}.json" -print0)
 echo " Running evaluation..."
 
-USE_LLM_FLAG=""
-if [ -n "${OPENAI_API_KEY:-}" ]; then
-    USE_LLM_FLAG="--use-llm"
-    echo " OPENAI_API_KEY detected: running LLM Judge (GPT-4o) evaluation."
-else
-    echo "ℹ️ Running evaluation in exact-match mode (no paid OpenAI key needed)."
-fi
+echo " Running exact-match evaluation (LLM judge disabled)."
 
 python evaluate_tool_calls.py \
     --benchmark benchmark_data_v2.json \
-    --results-dir fdb_v3_data_released \
+    --results-dir "${SNAPSHOT_DIR}" \
     --provider "${LK_PROVIDER}" \
-    --output "${SCRIPT_DIR}/logs/${LK_PROVIDER}_eval_${TIMESTAMP}.json" \
-    ${USE_LLM_FLAG}
+    --output "${RUN_DIR}/tool_calls_report.json"
 
 python evaluate_pass_rate.py \
     --benchmark benchmark_data_v2.json \
-    --results-dir fdb_v3_data_released \
+    --results-dir "${SNAPSHOT_DIR}" \
     --provider "${LK_PROVIDER}" \
-    --output "${SCRIPT_DIR}/logs/${LK_PROVIDER}_pass_rate_${TIMESTAMP}.json" \
-    ${USE_LLM_FLAG}
+    --output "${RUN_DIR}/pass_rate_report.json"
+
+python summarize_evaluation.py \
+    --pass-rate-report "${RUN_DIR}/pass_rate_report.json" \
+    --tool-calls-report "${RUN_DIR}/tool_calls_report.json" \
+    --output "${RUN_DIR}/summary_metrics.json" \
+    --run-id "${RUN_ID}" \
+    --provider "${LK_PROVIDER}"
 
 echo "======================================================================"
-echo " Evaluation complete! Results saved in ${SCRIPT_DIR}/logs/"
+echo " Evaluation complete! Reports and summary saved in ${RUN_DIR}/"
 echo "======================================================================"
