@@ -451,8 +451,9 @@ Copy [`.env.example`](.env.example) → `.env`:
 
 ### Limitations
 
-- The full 100-item run was constrained by CPU load in the current environment
-- 10.43 s average latency shows further responsiveness work is needed
+- Strict exact-match scoring is 45/100; mean argument accuracy (0.528) trails tool-selection F1 (0.823). The 21 wrong-argument failures comprise 7 date-format mismatches, 5 spoken-identifier formatting mismatches, 4 number/boolean representation mismatches, and 7 other value mismatches.
+- A general schema-guidance and primitive-normalization prototype was replayed against those 21 inputs, but the run produced only 1/21 turn-taken responses and 20 silent outputs. Its 0/21 strict pass rate and 0.0 all-sample argument accuracy are not evidence of a reliable model-quality comparison; the worker logged a 175.5 s event-loop stall. The prototype was reverted, and the full-run headline remains the original baseline.
+- Full-run mean response latency is 11.732 s, excluding 5 interruption samples; responsiveness and event-loop stability need further work.
 - Explicit application-level stale-call cancellation / rollback is not yet fully implemented
 - Benchmark rerun by organizers determines the official score
 

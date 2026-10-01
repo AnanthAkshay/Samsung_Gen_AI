@@ -239,6 +239,14 @@ All AI-assisted outputs used in the project were reviewed, modified, tested, and
 
 The team retains responsibility for the final implementation, prompts, tool definitions, evaluation methodology, documentation, and submitted system.
 
+### 8.6 Argument Formatting Failure Mode and Fix Attempt
+
+The complete exact-match baseline exposed argument-value formatting errors: date strings were sometimes normalized to ISO-8601, spoken identifiers sometimes gained or lost punctuation, primitive number/boolean values were sometimes emitted as strings, and other argument values were incorrect. The 21 strict failures in this category break down into 7 date-format mismatches, 5 identifier-format mismatches, 4 number/boolean representation mismatches, and 7 other value mismatches.
+
+A general prototype added tool-schema format guidance and schema-driven coercion for unambiguous boolean and numeric strings while preserving ordinary text and identifiers. It contained no benchmark-specific scenario IDs or expected values. The baseline subset had 2 correctly matched argument calls out of 25 (0.080 micro accuracy; 0.048 mean per-scenario argument accuracy). The replay produced only 1 turn-taken response out of 21; the other 20 were silent. Exact-match evaluation of that replay recorded 0.0 all-sample argument accuracy and 0/21 strict passes, with all-sample tool-selection F1 falling from 1.000 on the baseline subset to 0.048 on the replay. The worker also logged a 175.5-second event-loop stall.
+
+Because the replay was dominated by silent outputs and a severe runtime stall, it does not establish that the prototype improved argument quality. The prototype was reverted, no full 100-scenario rerun was performed, and the reported full-run results remain the original exact-match baseline. Argument formatting and reliable subset evaluation remain limitations.
+
 ---
 
 # 9. Ethical & Compliance Confirmation
