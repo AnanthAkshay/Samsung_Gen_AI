@@ -1,19 +1,76 @@
 # Interruptible Real-Time Voice Agent — Samsung Gen AI Hackathon 3.0
 
-> **Theme 05:** Interruptible Real-Time Agents  
-> **Evaluation Benchmark:** [Full-Duplex-Bench v3 (FDB-v3)](https://github.com/DanielLin94144/Full-Duplex-Bench) (arXiv:2604.04847)  
-> **Framework:** LiveKit Voice Agents SDK (`livekit-agents==1.8.3`)  
-> **Primary Realtime Model:** Google Gemini 2.5 Flash Native Audio (`gemini-2.5-flash-native-audio-preview-12-2025`)  
-> **Team:** Cache_Me (M S Ramaiah Institute of Technology) — Akshay A, Aaditya V, H M Pranav, Tejas M  
-> **AI Usage Disclosure:** [DISCLOSURE.md](DISCLOSURE.md)
+> **Theme 05 — Interruptible Real-Time Agents**  
+> **Benchmark:** [Full-Duplex-Bench v3 (FDB-v3)](https://github.com/DanielLin94144/Full-Duplex-Bench) — multi-step tool calling under real-world speech disfluency  
+> **Stack:** LiveKit Voice Agents SDK · Google Gemini 2.5 Flash Native Audio (end-to-end speech model)  
+> **Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md)  
+> **Submission Tag:** `PRISM_GENAI_HACKATHON_Y2026`  
+> **Full Demo Video (with Voiceover):** [`demo/out/final_submission_with_voice.mp4`](demo/out/final_submission_with_voice.mp4) (04:30 min, 1440x900 @ 30fps)
+
+<p align="center">
+  <img src="docs/images/01_title_banner.png" alt="Samsung Gen AI Hackathon Theme 05 Demo Banner" width="95%" />
+</p>
+
+A low-latency, full-duplex conversational voice agent that understands spontaneous human speech — hesitations, filler words, self-corrections — supports immediate mid-utterance barge-in, and reliably executes **multi-step tool calls** across four domains, all natively handled by a single realtime audio model.
 
 ---
 
-## 1. Overview
+## Table of Contents
 
-Human spoken dialogue is dynamic: speakers hesitate ("um", "uh"), modify decisions mid-sentence ("book a flight to London — no wait, Paris"), and speak over one another. Traditional voice assistants rely on a cascaded architecture (Voice Activity Detection → Speech-to-Text → Text LLM → Text-to-Speech) that serializes speech through intermediate text representations, accumulating latency at every step and struggling with spontaneous interruptions.
+1. [Why This Project](#1-why-this-project)
+2. [Architecture](#2-architecture)
+3. [Repository Layout](#3-repository-layout)
+4. [Benchmark & Evaluation Methodology](#4-benchmark--evaluation-methodology)
+5. [Results & Benchmark Evidence](#5-results--benchmark-evidence)
+6. [Extension Demo — In-Car Voice Navigation Assistant](#6-extension-demo--in-car-voice-navigation-assistant)
+7. [Setup](#7-setup)
+8. [One-Command Reproduction](#8-one-command-reproduction)
+9. [Docker Containerized Reproduction](#9-docker-containerized-reproduction)
+10. [Manual Pipeline Walkthrough](#10-manual-pipeline-walkthrough)
+11. [Configuration & API Keys](#11-configuration--api-keys)
+12. [Innovation Highlights & Limitations](#12-innovation-highlights--limitations)
+13. [Roadmap — What's Next](#13-roadmap--whats-next)
+14. [Demonstration Video & Voiceover](#14-demonstration-video--voiceover)
+15. [Models & Providers (Citations)](#15-models--providers-citations)
+16. [Known Issues & Troubleshooting](#16-known-issues--troubleshooting)
+17. [Final Submission Tag Instructions](#17-final-submission-tag-instructions)
 
-For **Theme 05 (Interruptible Real-Time Agents)**, Team Cache_Me evaluated and implemented a full-duplex conversational voice agent powered by **Google Gemini 2.5 Flash Native Audio** through the **LiveKit Voice Agents SDK**. The agent operates directly on audio frames without an intermediate transcription bottleneck, handling speech understanding, barge-in interruption, and multi-step tool execution across four domains (E-Commerce, Finance, Housing, and Travel) benchmarked on **Full-Duplex-Bench v3 (FDB-v3)**.
+---
+
+## 1. Why This Project
+
+Real conversations are messy. Speakers pause mid-sentence, say "um", change their mind ("book to the mall — no wait, the office"), and interrupt the agent before it finishes. FDB-v3 measures exactly this: can a voice agent wait for the right moment, ignore disfluencies, and still fire the correct sequence of tool calls with correct arguments?
+
+This submission answers with a **fully native approach**: instead of a cascaded STT → LLM → TTS pipeline (which serializes speech through rigid text transcripts and adds latency at every stage), a single end-to-end audio model — **Gemini 2.5 Flash Native Audio** — handles speech understanding, turn-taking, interruption, intent detection, function calling, and spoken responses in one model pass.
+
+**Design principle: the conversation should remain alive while the agent works.**
+
+### Where interruptible voice agents matter
+
+| Domain | Why interruption & correction are essential |
+|:---|:---|
+| 🚗 **Driving** | Hands-free requests where users frequently interrupt or redirect |
+| 🛒 **Shopping** | Change products, quantities, filters and preferences mid-conversation |
+| ✈️ **Travel** | Modify destinations, dates, passengers or booking preferences while planning |
+| 💼 **Productivity** | Voice workflows where users naturally add, correct and reprioritize tasks |
+
+*These are intended use cases — not current production deployments.*
+
+### Why this approach is different
+
+1. **Native realtime** — no separate ASR → LLM → TTS cascade; one end-to-end audio model.
+2. **Real tool interaction** — the agent does not stop at generating text; it interacts with tools.
+3. **Disfluency-aware evaluation** — the benchmark contains false starts, self-corrections, disfluencies and interruptions.
+4. **Measured, not assumed** — we instrument F1, precision, recall, strict pass rate, and latency.
+
+The system is evaluated as an **interactive agent, not just a chatbot**.
+
+| Design decision | Rationale |
+|:---|:---|
+| **Native realtime (Gemini Live) over cascaded pipeline** | ~4.25 s vs ~10.12 s published latency; zero paid API keys for agent runtime; native disfluency handling (see [NOTES.md](NOTES.md) ARCH-001) |
+| **LiveKit Cloud WebRTC transport** | Production-grade real-time audio, free tier, built-in room dispatch |
+| **Exact-match evaluation (no LLM judge)** | Reported metrics reproducible **without any paid API key** |
+| **Mock tool backends** | Deterministic, auditable tool behavior with configurable latency profiles |
 
 ---
 
