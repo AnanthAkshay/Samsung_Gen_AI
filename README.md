@@ -2,6 +2,7 @@
 
 > **Theme 05 — Interruptible Real-Time Agents**
 > **Benchmark:** [Full-Duplex-Bench v3 (FDB-v3)](https://github.com/DanielLin94144/Full-Duplex-Bench) — multi-step tool calling under real-world speech disfluency
+> 
 > **Stack:** LiveKit Voice Agents SDK · Google Gemini 2.5 Flash Native Audio (end-to-end speech model)
 > **Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md) · **Contact:** msrit.cache.me@example.com
 > **Submission Tag:** `PRISM_GENAI_HACKATHON_Y2026`
