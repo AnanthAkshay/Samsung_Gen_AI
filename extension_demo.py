@@ -69,25 +69,32 @@ class CarAssistant(Agent):
     def __init__(self) -> None:
         super().__init__(instructions=INSTRUCTIONS)
         self.active_destination: str | None = None
+        self.active_call_id: str | None = None
 
     @function_tool
     async def navigate_to(self, context: RunContext, destination: str):
         """Start turn-by-turn navigation to the given destination."""
+        import uuid
+        call_id = f"call_{uuid.uuid4().hex[:8]}"
+        self.active_call_id = call_id
         self.active_destination = destination
-        log_event("navigate_to", destination=destination)
+        log_event("navigate_to", destination=destination, call_id=call_id, status="issued")
         return f"Navigation started to {destination}."
 
     @function_tool
     async def cancel_navigation(self, context: RunContext):
         """Cancel the currently active navigation."""
-        log_event("cancel_navigation", was=self.active_destination)
+        call_id = getattr(self, 'active_call_id', None)
+        log_event("cancel_navigation", was=self.active_destination, call_id=call_id, status="cancelled")
         self.active_destination = None
+        self.active_call_id = None
         return "Navigation cancelled."
 
     @function_tool
     async def get_eta(self, context: RunContext):
         """Report the estimated time of arrival for the active navigation."""
-        log_event("get_eta", destination=self.active_destination)
+        call_id = getattr(self, 'active_call_id', None)
+        log_event("get_eta", destination=self.active_destination, call_id=call_id)
         if self.active_destination:
             return f"About 18 minutes to {self.active_destination}."
         return "There is no active navigation."

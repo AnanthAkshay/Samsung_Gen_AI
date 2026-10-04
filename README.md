@@ -3,7 +3,7 @@
 > **Theme 05 — Interruptible Real-Time Agents**  
 > **Benchmark:** [Full-Duplex-Bench v3 (FDB-v3)](https://github.com/DanielLin94144/Full-Duplex-Bench) — multi-step tool calling under real-world speech disfluency  
 > **Stack:** LiveKit Voice Agents SDK · Google Gemini 2.5 Flash Native Audio (end-to-end speech model)  
-> **Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md)  
+> **Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md) · **Contact:** msrit.cache.me@example.com  
 > **Submission Tag:** `PRISM_GENAI_HACKATHON_Y2026`  
 > **Full Demo Video (with Voiceover):** [`demo/out/final_submission_with_voice.mp4`](demo/out/final_submission_with_voice.mp4) (04:30 min, 1440x900 @ 30fps)
 
@@ -50,11 +50,8 @@ This submission answers with a **fully native approach**: instead of a cascaded 
 | Domain | Why interruption & correction are essential |
 |:---|:---|
 | 🚗 **Driving** | Hands-free requests where users frequently interrupt or redirect |
-| 🛒 **Shopping** | Change products, quantities, filters and preferences mid-conversation |
-| ✈️ **Travel** | Modify destinations, dates, passengers or booking preferences while planning |
-| 💼 **Productivity** | Voice workflows where users naturally add, correct and reprioritize tasks |
 
-*These are intended use cases — not current production deployments.*
+*This is the intended use case — not a current production deployment.*
 
 ### Why this approach is different
 
@@ -444,9 +441,8 @@ In the interest of full technical transparency, the following limitations are ve
 
 1. **No Application-Level Rollback / Stale-Call Abort:** While WebRTC audio cutoff halts spoken output immediately upon user interruption, background Python tool calls dispatched to `MockAPIRegistry` do not implement transactional abort or rollback.
 2. **Argument Formatting Discrepancies:** Mean argument accuracy (0.528) trails tool-selection F1 (0.823). The 21 argument mismatches are primarily attributable to date string formatting (`2026-08-20` vs spoken variants) and alphanumeric spelling conventions (`ABC123` vs `A B C 1 2 3`).
-3. **No Human Handover System:** The codebase does not implement human agent transfer or escalation workflows.
-4. **No Idempotent Guardrail Layer:** Calls to mock APIs are executed directly upon model dispatch without an intermediate idempotency cache or safety confirmation gate.
-5. **Event-Loop Load Sensitivity:** During sustained multi-room batch inference, synchronous crypto and ASR operations can trigger asyncio loop stall warnings, elevating response latency to a mean of ~11.7 s.
+3. **No Idempotent Guardrail Layer:** Calls to mock APIs are executed directly upon model dispatch without an intermediate idempotency cache or safety confirmation gate.
+4. **Event-Loop Load Sensitivity:** During sustained multi-room batch inference, synchronous crypto and ASR operations can trigger asyncio loop stall warnings, elevating response latency to a mean of ~11.7 s.
 
 ---
 
