@@ -1,0 +1,8 @@
+exact-match vs LLM-judge (gpt-4o) — results/baseline_final_20261001_020033
+
+Mode               | N   | Strict pass          | Tool F1 | Arg acc | Mean latency
+-------------------+-----+----------------------+---------+---------+-------------
+exact-match        | 100 | 45/100 (45.0%)       | 0.823   | 0.528   | 11.732s
+llm-judge (gpt-4o) | not run — this baseline predates organizer-matching --use-llm scoring. Re-score existing result JSON (no 2-hour inference) with:
+  python scripts/run_scoring.py --python .venv/Scripts/python.exe --v3-dir Full-Duplex-Bench/v3 --data-dir Full-Duplex-Bench/v3/fdb_v3_data_released --results-dir results/baseline_final_20261001_020033 --provider gemini2_5 --run-id baseline_final_20261001_020033 --limit 100 --use-llm-judge
+  Requires OPENAI_API_KEY. Do not pass --force (that would re-stream audio).

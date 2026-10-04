@@ -1,0 +1,485 @@
+{
+  "pid": "5e3c1fbece3a7b000a6fd95a",
+  "example_id": "finance_21",
+  "category": "finance_billing",
+  "title": "Hesitant Multi-Task",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-10-01T03:06:15.647299",
+  "inference_time_s": 54.48,
+  "room_name": "eval-dabd983a",
+  "stream_start_time": 1790804180.4331346,
+  "input_transcript": "All right, so first, um, I want to know what the benefits are for the gold card because I'm comparing a few options. And then I also need to convert 500 US dollars to yen because I'm buying something from Japan.",
+  "input_asr_chunks": [
+    {
+      "text": "All",
+      "timestamp": [
+        0.8,
+        1.04
+      ]
+    },
+    {
+      "text": "right,",
+      "timestamp": [
+        1.04,
+        1.28
+      ]
+    },
+    {
+      "text": "so",
+      "timestamp": [
+        1.52,
+        1.84
+      ]
+    },
+    {
+      "text": "first,",
+      "timestamp": [
+        1.84,
+        2.16
+      ]
+    },
+    {
+      "text": "um,",
+      "timestamp": [
+        2.4,
+        2.56
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        2.72,
+        2.96
+      ]
+    },
+    {
+      "text": "want",
+      "timestamp": [
+        2.96,
+        3.12
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        3.12,
+        3.36
+      ]
+    },
+    {
+      "text": "know",
+      "timestamp": [
+        3.36,
+        3.6
+      ]
+    },
+    {
+      "text": "what",
+      "timestamp": [
+        3.6,
+        3.92
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        3.92,
+        4.16
+      ]
+    },
+    {
+      "text": "benefits",
+      "timestamp": [
+        4.48,
+        5.36
+      ]
+    },
+    {
+      "text": "are",
+      "timestamp": [
+        5.36,
+        5.6000000000000005
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        5.6000000000000005,
+        5.76
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        5.76,
+        5.92
+      ]
+    },
+    {
+      "text": "gold",
+      "timestamp": [
+        5.92,
+        6.24
+      ]
+    },
+    {
+      "text": "card",
+      "timestamp": [
+        6.24,
+        6.72
+      ]
+    },
+    {
+      "text": "because",
+      "timestamp": [
+        6.72,
+        6.96
+      ]
+    },
+    {
+      "text": "I'm",
+      "timestamp": [
+        6.96,
+        7.2
+      ]
+    },
+    {
+      "text": "comparing",
+      "timestamp": [
+        7.2,
+        7.76
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        7.76,
+        7.92
+      ]
+    },
+    {
+      "text": "few",
+      "timestamp": [
+        7.92,
+        8.24
+      ]
+    },
+    {
+      "text": "options.",
+      "timestamp": [
+        8.24,
+        9.200000000000001
+      ]
+    },
+    {
+      "text": "And",
+      "timestamp": [
+        9.52,
+        9.68
+      ]
+    },
+    {
+      "text": "then",
+      "timestamp": [
+        9.68,
+        9.92
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        9.92,
+        10.16
+      ]
+    },
+    {
+      "text": "also",
+      "timestamp": [
+        10.16,
+        10.4
+      ]
+    },
+    {
+      "text": "need",
+      "timestamp": [
+        10.4,
+        10.64
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        10.64,
+        10.8
+      ]
+    },
+    {
+      "text": "convert",
+      "timestamp": [
+        10.8,
+        11.44
+      ]
+    },
+    {
+      "text": "500",
+      "timestamp": [
+        11.76,
+        12.64
+      ]
+    },
+    {
+      "text": "US",
+      "timestamp": [
+        12.64,
+        13.120000000000001
+      ]
+    },
+    {
+      "text": "dollars",
+      "timestamp": [
+        13.120000000000001,
+        13.52
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        13.52,
+        13.84
+      ]
+    },
+    {
+      "text": "yen",
+      "timestamp": [
+        13.84,
+        14.4
+      ]
+    },
+    {
+      "text": "because",
+      "timestamp": [
+        14.4,
+        14.72
+      ]
+    },
+    {
+      "text": "I'm",
+      "timestamp": [
+        14.72,
+        15.040000000000001
+      ]
+    },
+    {
+      "text": "buying",
+      "timestamp": [
+        15.040000000000001,
+        15.6
+      ]
+    },
+    {
+      "text": "something",
+      "timestamp": [
+        15.6,
+        15.84
+      ]
+    },
+    {
+      "text": "from",
+      "timestamp": [
+        15.84,
+        16.16
+      ]
+    },
+    {
+      "text": "Japan.",
+      "timestamp": [
+        16.16,
+        16.96
+      ]
+    }
+  ],
+  "user_speech_end_rel": 16.96,
+  "latency": {
+    "input_duration_s": 48.9,
+    "output_duration_s": 48.9,
+    "first_speech_s": 27.9
+  },
+  "user_done_unix": 1790804197.3931346,
+  "search_latency_breakdown": {
+    "room": "eval-dabd983a",
+    "tool": "Search Tool",
+    "reasoning": 19.682,
+    "execution": 0.0,
+    "synthesis": 2.45,
+    "total": 22.131,
+    "agent_start_at": 1790804206.7121944
+  },
+  "absolute_total_latency": 9.319,
+  "transcript": "The gold card offers 2% cash back and no foreign transaction fees. Also, 500 USD is equivalent to 450.0 JPY.",
+  "asr_chunks": [
+    {
+      "text": "The",
+      "timestamp": [
+        27.68,
+        28.0
+      ]
+    },
+    {
+      "text": "gold",
+      "timestamp": [
+        28.0,
+        28.32
+      ]
+    },
+    {
+      "text": "card",
+      "timestamp": [
+        28.32,
+        28.72
+      ]
+    },
+    {
+      "text": "offers",
+      "timestamp": [
+        28.72,
+        29.04
+      ]
+    },
+    {
+      "text": "2%",
+      "timestamp": [
+        29.04,
+        29.36
+      ]
+    },
+    {
+      "text": "cash",
+      "timestamp": [
+        29.68,
+        30.0
+      ]
+    },
+    {
+      "text": "back",
+      "timestamp": [
+        30.0,
+        30.16
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        30.32,
+        30.560000000000002
+      ]
+    },
+    {
+      "text": "no",
+      "timestamp": [
+        30.560000000000002,
+        30.8
+      ]
+    },
+    {
+      "text": "foreign",
+      "timestamp": [
+        30.8,
+        31.2
+      ]
+    },
+    {
+      "text": "transaction",
+      "timestamp": [
+        31.2,
+        31.76
+      ]
+    },
+    {
+      "text": "fees.",
+      "timestamp": [
+        31.76,
+        32.08
+      ]
+    },
+    {
+      "text": "Also,",
+      "timestamp": [
+        32.4,
+        32.64
+      ]
+    },
+    {
+      "text": "500",
+      "timestamp": [
+        32.8,
+        33.44
+      ]
+    },
+    {
+      "text": "USD",
+      "timestamp": [
+        33.44,
+        34.0
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        34.0,
+        34.160000000000004
+      ]
+    },
+    {
+      "text": "equivalent",
+      "timestamp": [
+        34.160000000000004,
+        34.72
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        34.72,
+        34.88
+      ]
+    },
+    {
+      "text": "450.0",
+      "timestamp": [
+        34.88,
+        36.32
+      ]
+    },
+    {
+      "text": "JPY.",
+      "timestamp": [
+        36.56,
+        37.36
+      ]
+    }
+  ],
+  "perceived_total_latency": 10.72,
+  "audio_agent_speech_start": 27.68,
+  "actual_tool_calls": [
+    {
+      "function": "get_card_benefits",
+      "args": {
+        "card_type": "gold"
+      },
+      "timestamp_start": 22.7,
+      "timestamp_end": 22.7
+    },
+    {
+      "function": "get_exchange_rate",
+      "args": {
+        "amount": 500.0,
+        "from_currency": "USD",
+        "to_currency": "JPY"
+      },
+      "timestamp_start": 23.83,
+      "timestamp_end": 23.83
+    }
+  ],
+  "status": "completed",
+  "attempts": 1
+}

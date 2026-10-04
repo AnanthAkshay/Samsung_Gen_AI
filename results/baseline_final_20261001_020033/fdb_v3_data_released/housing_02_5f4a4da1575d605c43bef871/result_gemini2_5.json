@@ -1,0 +1,350 @@
+{
+  "pid": "5f4a4da1575d605c43bef871",
+  "example_id": "housing_02",
+  "category": "housing_location",
+  "title": "Simple Commute Check",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-10-01T03:10:36.953646",
+  "inference_time_s": 50.67,
+  "room_name": "eval-a0ac64ef",
+  "stream_start_time": 1790804441.7314775,
+  "input_transcript": "Tell me how long it would take to drive from one oh one Main Street to downtown office during a normal day. Um, I want to make sure it's reasonable.",
+  "input_asr_chunks": [
+    {
+      "text": "Tell",
+      "timestamp": [
+        2.8000000000000003,
+        3.04
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        3.04,
+        3.2800000000000002
+      ]
+    },
+    {
+      "text": "how",
+      "timestamp": [
+        3.2800000000000002,
+        3.52
+      ]
+    },
+    {
+      "text": "long",
+      "timestamp": [
+        3.52,
+        3.68
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        3.68,
+        3.84
+      ]
+    },
+    {
+      "text": "would",
+      "timestamp": [
+        3.84,
+        4.0
+      ]
+    },
+    {
+      "text": "take",
+      "timestamp": [
+        4.0,
+        4.24
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        4.24,
+        4.5600000000000005
+      ]
+    },
+    {
+      "text": "drive",
+      "timestamp": [
+        4.5600000000000005,
+        5.28
+      ]
+    },
+    {
+      "text": "from",
+      "timestamp": [
+        5.28,
+        5.6000000000000005
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        5.6000000000000005,
+        5.76
+      ]
+    },
+    {
+      "text": "oh",
+      "timestamp": [
+        5.92,
+        6.08
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        6.16,
+        6.4
+      ]
+    },
+    {
+      "text": "Main",
+      "timestamp": [
+        6.4,
+        6.8
+      ]
+    },
+    {
+      "text": "Street",
+      "timestamp": [
+        6.8,
+        7.2
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        7.2,
+        7.36
+      ]
+    },
+    {
+      "text": "downtown",
+      "timestamp": [
+        7.44,
+        8.24
+      ]
+    },
+    {
+      "text": "office",
+      "timestamp": [
+        8.24,
+        8.88
+      ]
+    },
+    {
+      "text": "during",
+      "timestamp": [
+        9.120000000000001,
+        9.6
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        9.6,
+        9.76
+      ]
+    },
+    {
+      "text": "normal",
+      "timestamp": [
+        9.76,
+        10.48
+      ]
+    },
+    {
+      "text": "day.",
+      "timestamp": [
+        10.48,
+        10.8
+      ]
+    },
+    {
+      "text": "Um,",
+      "timestamp": [
+        11.120000000000001,
+        11.76
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        12.08,
+        12.32
+      ]
+    },
+    {
+      "text": "want",
+      "timestamp": [
+        12.32,
+        12.56
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        12.56,
+        12.64
+      ]
+    },
+    {
+      "text": "make",
+      "timestamp": [
+        12.64,
+        12.8
+      ]
+    },
+    {
+      "text": "sure",
+      "timestamp": [
+        12.8,
+        13.040000000000001
+      ]
+    },
+    {
+      "text": "it's",
+      "timestamp": [
+        13.040000000000001,
+        13.44
+      ]
+    },
+    {
+      "text": "reasonable.",
+      "timestamp": [
+        13.44,
+        14.32
+      ]
+    }
+  ],
+  "user_speech_end_rel": 14.32,
+  "latency": {
+    "input_duration_s": 45.136,
+    "output_duration_s": 45.136,
+    "first_speech_s": 28.8
+  },
+  "user_done_unix": 1790804456.0514774,
+  "search_latency_breakdown": {
+    "room": "eval-a0ac64ef",
+    "tool": "Search Tool",
+    "reasoning": 16.41,
+    "execution": 0.561,
+    "synthesis": 1.106,
+    "total": 18.077,
+    "agent_start_at": 1790804468.8890007
+  },
+  "absolute_total_latency": 12.838,
+  "transcript": "On a normal day, driving takes about twenty five minutes.",
+  "asr_chunks": [
+    {
+      "text": "On",
+      "timestamp": [
+        28.72,
+        28.96
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        28.96,
+        29.12
+      ]
+    },
+    {
+      "text": "normal",
+      "timestamp": [
+        29.12,
+        29.52
+      ]
+    },
+    {
+      "text": "day,",
+      "timestamp": [
+        29.52,
+        29.68
+      ]
+    },
+    {
+      "text": "driving",
+      "timestamp": [
+        29.92,
+        30.48
+      ]
+    },
+    {
+      "text": "takes",
+      "timestamp": [
+        30.48,
+        30.88
+      ]
+    },
+    {
+      "text": "about",
+      "timestamp": [
+        30.88,
+        31.2
+      ]
+    },
+    {
+      "text": "twenty",
+      "timestamp": [
+        31.2,
+        31.52
+      ]
+    },
+    {
+      "text": "five",
+      "timestamp": [
+        31.6,
+        32.0
+      ]
+    },
+    {
+      "text": "minutes.",
+      "timestamp": [
+        32.0,
+        32.72
+      ]
+    }
+  ],
+  "perceived_total_latency": 14.4,
+  "audio_agent_speech_start": 28.72,
+  "actual_tool_calls": [
+    {
+      "function": "calculate_commute",
+      "args": {
+        "origin_address": "101 main street",
+        "destination_address": "downtown office",
+        "mode": "driving"
+      },
+      "timestamp_start": 17.81,
+      "timestamp_end": 18.29
+    },
+    {
+      "function": "calculate_commute",
+      "args": {
+        "origin_address": "101 mainstreet",
+        "destination_address": "downtown office",
+        "mode": "driving"
+      },
+      "timestamp_start": 21.13,
+      "timestamp_end": 21.78
+    },
+    {
+      "function": "calculate_commute",
+      "args": {
+        "origin_address": "101 mainstreet",
+        "destination_address": "downtown office",
+        "mode": "driving"
+      },
+      "timestamp_start": 25.49,
+      "timestamp_end": 26.05
+    }
+  ],
+  "status": "completed",
+  "attempts": 1
+}

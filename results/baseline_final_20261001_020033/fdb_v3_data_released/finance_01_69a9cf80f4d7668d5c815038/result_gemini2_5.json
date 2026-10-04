@@ -1,0 +1,337 @@
+{
+  "pid": "69a9cf80f4d7668d5c815038",
+  "example_id": "finance_01",
+  "category": "finance_billing",
+  "title": "Simple Currency Exchange",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-10-01T02:44:30.593299",
+  "inference_time_s": 46.6,
+  "room_name": "eval-02fef2ac",
+  "stream_start_time": 1790802875.2770414,
+  "input_transcript": "Like, I'm trying to figure out how much five hundred US dollars would be if I converted it to Euros. Could you check that for me?",
+  "input_asr_chunks": [
+    {
+      "text": "Like,",
+      "timestamp": [
+        1.12,
+        1.28
+      ]
+    },
+    {
+      "text": "I'm",
+      "timestamp": [
+        1.84,
+        2.32
+      ]
+    },
+    {
+      "text": "trying",
+      "timestamp": [
+        2.32,
+        2.56
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        2.56,
+        2.72
+      ]
+    },
+    {
+      "text": "figure",
+      "timestamp": [
+        2.72,
+        3.04
+      ]
+    },
+    {
+      "text": "out",
+      "timestamp": [
+        3.04,
+        3.2800000000000002
+      ]
+    },
+    {
+      "text": "how",
+      "timestamp": [
+        3.2800000000000002,
+        3.44
+      ]
+    },
+    {
+      "text": "much",
+      "timestamp": [
+        3.44,
+        3.68
+      ]
+    },
+    {
+      "text": "five",
+      "timestamp": [
+        3.68,
+        4.0
+      ]
+    },
+    {
+      "text": "hundred",
+      "timestamp": [
+        4.0,
+        4.16
+      ]
+    },
+    {
+      "text": "US",
+      "timestamp": [
+        4.24,
+        4.64
+      ]
+    },
+    {
+      "text": "dollars",
+      "timestamp": [
+        4.64,
+        4.96
+      ]
+    },
+    {
+      "text": "would",
+      "timestamp": [
+        5.12,
+        5.36
+      ]
+    },
+    {
+      "text": "be",
+      "timestamp": [
+        5.36,
+        5.6000000000000005
+      ]
+    },
+    {
+      "text": "if",
+      "timestamp": [
+        5.6000000000000005,
+        5.84
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        5.84,
+        6.08
+      ]
+    },
+    {
+      "text": "converted",
+      "timestamp": [
+        6.08,
+        6.640000000000001
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        6.640000000000001,
+        6.8
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        6.8,
+        7.04
+      ]
+    },
+    {
+      "text": "Euros.",
+      "timestamp": [
+        7.04,
+        8.0
+      ]
+    },
+    {
+      "text": "Could",
+      "timestamp": [
+        8.32,
+        8.56
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        8.56,
+        8.72
+      ]
+    },
+    {
+      "text": "check",
+      "timestamp": [
+        8.72,
+        9.040000000000001
+      ]
+    },
+    {
+      "text": "that",
+      "timestamp": [
+        9.040000000000001,
+        9.36
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        9.36,
+        9.68
+      ]
+    },
+    {
+      "text": "me?",
+      "timestamp": [
+        9.68,
+        9.84
+      ]
+    }
+  ],
+  "user_speech_end_rel": 9.84,
+  "latency": {
+    "input_duration_s": 40.98,
+    "output_duration_s": 40.98,
+    "first_speech_s": 16.4
+  },
+  "user_done_unix": 1790802885.1170413,
+  "search_latency_breakdown": {
+    "room": "eval-02fef2ac",
+    "tool": "Search Tool",
+    "reasoning": 6.903,
+    "execution": 0.0,
+    "synthesis": 3.112,
+    "total": 10.015,
+    "agent_start_at": 1790802890.096863
+  },
+  "absolute_total_latency": 4.98,
+  "transcript": "Five hundred USD is four hundred and fifty point zero Euro at the current rate.",
+  "asr_chunks": [
+    {
+      "text": "Five",
+      "timestamp": [
+        16.32,
+        16.64
+      ]
+    },
+    {
+      "text": "hundred",
+      "timestamp": [
+        16.64,
+        16.96
+      ]
+    },
+    {
+      "text": "USD",
+      "timestamp": [
+        16.96,
+        17.52
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        17.52,
+        17.68
+      ]
+    },
+    {
+      "text": "four",
+      "timestamp": [
+        17.68,
+        17.84
+      ]
+    },
+    {
+      "text": "hundred",
+      "timestamp": [
+        18.0,
+        18.080000000000002
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        18.16,
+        18.240000000000002
+      ]
+    },
+    {
+      "text": "fifty",
+      "timestamp": [
+        18.240000000000002,
+        18.56
+      ]
+    },
+    {
+      "text": "point",
+      "timestamp": [
+        18.56,
+        18.8
+      ]
+    },
+    {
+      "text": "zero",
+      "timestamp": [
+        18.8,
+        19.12
+      ]
+    },
+    {
+      "text": "Euro",
+      "timestamp": [
+        19.12,
+        19.6
+      ]
+    },
+    {
+      "text": "at",
+      "timestamp": [
+        19.6,
+        19.68
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        19.68,
+        19.76
+      ]
+    },
+    {
+      "text": "current",
+      "timestamp": [
+        19.76,
+        20.16
+      ]
+    },
+    {
+      "text": "rate.",
+      "timestamp": [
+        20.16,
+        20.64
+      ]
+    }
+  ],
+  "perceived_total_latency": 6.48,
+  "audio_agent_speech_start": 16.32,
+  "actual_tool_calls": [
+    {
+      "function": "get_exchange_rate",
+      "args": {
+        "amount": 500.0,
+        "from_currency": "USD",
+        "to_currency": "EUR"
+      },
+      "timestamp_start": 11.71,
+      "timestamp_end": 11.71
+    }
+  ],
+  "status": "completed",
+  "attempts": 1
+}

@@ -1,0 +1,315 @@
+{
+  "pid": "6998abd731d2ec50d067d5bd",
+  "example_id": "travel_05",
+  "category": "travel_identity",
+  "title": "Flight Search with Hesitation",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-10-01T03:43:27.038056",
+  "inference_time_s": 46.39,
+  "room_name": "eval-0f3958de",
+  "stream_start_time": 1790806411.7377894,
+  "input_transcript": "So, I need to go to Chicago sometime around, let me think, I believe it's December twelfth. Yeah. Could you look up flights for the day?",
+  "input_asr_chunks": [
+    {
+      "text": "So,",
+      "timestamp": [
+        1.04,
+        1.2
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        1.28,
+        1.44
+      ]
+    },
+    {
+      "text": "need",
+      "timestamp": [
+        1.44,
+        1.68
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        1.68,
+        1.84
+      ]
+    },
+    {
+      "text": "go",
+      "timestamp": [
+        1.84,
+        2.0
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        2.0,
+        2.16
+      ]
+    },
+    {
+      "text": "Chicago",
+      "timestamp": [
+        2.16,
+        3.04
+      ]
+    },
+    {
+      "text": "sometime",
+      "timestamp": [
+        3.04,
+        3.6
+      ]
+    },
+    {
+      "text": "around,",
+      "timestamp": [
+        3.7600000000000002,
+        4.08
+      ]
+    },
+    {
+      "text": "let",
+      "timestamp": [
+        4.16,
+        4.32
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        4.32,
+        4.5600000000000005
+      ]
+    },
+    {
+      "text": "think,",
+      "timestamp": [
+        4.5600000000000005,
+        4.72
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        4.88,
+        5.04
+      ]
+    },
+    {
+      "text": "believe",
+      "timestamp": [
+        5.04,
+        5.28
+      ]
+    },
+    {
+      "text": "it's",
+      "timestamp": [
+        5.28,
+        5.5200000000000005
+      ]
+    },
+    {
+      "text": "December",
+      "timestamp": [
+        5.5200000000000005,
+        6.0
+      ]
+    },
+    {
+      "text": "twelfth.",
+      "timestamp": [
+        6.0,
+        6.5600000000000005
+      ]
+    },
+    {
+      "text": "Yeah.",
+      "timestamp": [
+        6.72,
+        7.04
+      ]
+    },
+    {
+      "text": "Could",
+      "timestamp": [
+        7.68,
+        7.92
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        7.92,
+        8.08
+      ]
+    },
+    {
+      "text": "look",
+      "timestamp": [
+        8.08,
+        8.32
+      ]
+    },
+    {
+      "text": "up",
+      "timestamp": [
+        8.32,
+        8.48
+      ]
+    },
+    {
+      "text": "flights",
+      "timestamp": [
+        8.64,
+        9.120000000000001
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        9.120000000000001,
+        9.44
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        9.44,
+        9.76
+      ]
+    },
+    {
+      "text": "day?",
+      "timestamp": [
+        9.76,
+        10.08
+      ]
+    }
+  ],
+  "user_speech_end_rel": 10.08,
+  "latency": {
+    "input_duration_s": 40.432,
+    "output_duration_s": 40.432,
+    "first_speech_s": 23.3
+  },
+  "user_done_unix": 1790806421.8177893,
+  "search_latency_breakdown": {
+    "room": "eval-0f3958de",
+    "tool": "Search Tool",
+    "reasoning": 12.545,
+    "execution": 0.63,
+    "synthesis": 1.66,
+    "total": 14.836,
+    "agent_start_at": 1790806433.406339
+  },
+  "absolute_total_latency": 11.589,
+  "transcript": "I found one flight to Chicago on December 12, 2026, for $450.",
+  "asr_chunks": [
+    {
+      "text": "I",
+      "timestamp": [
+        23.12,
+        23.36
+      ]
+    },
+    {
+      "text": "found",
+      "timestamp": [
+        23.36,
+        23.6
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        23.6,
+        23.84
+      ]
+    },
+    {
+      "text": "flight",
+      "timestamp": [
+        23.84,
+        24.080000000000002
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        24.080000000000002,
+        24.240000000000002
+      ]
+    },
+    {
+      "text": "Chicago",
+      "timestamp": [
+        24.240000000000002,
+        24.8
+      ]
+    },
+    {
+      "text": "on",
+      "timestamp": [
+        24.8,
+        24.96
+      ]
+    },
+    {
+      "text": "December",
+      "timestamp": [
+        24.96,
+        25.36
+      ]
+    },
+    {
+      "text": "12,",
+      "timestamp": [
+        25.36,
+        25.6
+      ]
+    },
+    {
+      "text": "2026,",
+      "timestamp": [
+        25.84,
+        26.400000000000002
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        26.64,
+        26.8
+      ]
+    },
+    {
+      "text": "$450.",
+      "timestamp": [
+        26.8,
+        27.76
+      ]
+    }
+  ],
+  "perceived_total_latency": 13.04,
+  "audio_agent_speech_start": 23.12,
+  "actual_tool_calls": [
+    {
+      "function": "search_flights",
+      "args": {
+        "destination": "Chicago",
+        "date": "2026-12-12"
+      },
+      "timestamp_start": 19.38,
+      "timestamp_end": 20.01
+    }
+  ],
+  "status": "completed",
+  "attempts": 1
+}

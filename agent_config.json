@@ -1,0 +1,28 @@
+{
+  "project_name": "Samsung_Gen_AI_Theme05_Cache_Me",
+  "theme": "Theme 05 - Interruptible Real-Time Agents",
+  "benchmark": "Full-Duplex-Bench v3 (FDB-v3, arXiv:2604.04847)",
+  "provider": "gemini2_5",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "voice": "Puck",
+  "python_version": "3.10-3.12",
+  "seed": 42,
+  "fdb_upstream_repo": "https://github.com/DanielLin94144/Full-Duplex-Bench.git",
+  "fdb_upstream_commit": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",
+  "fdb_audio_drive_id": "1SO_4MTazWQ_jvCx0dtmpQ-t40bdd07yz",
+  "llm_judge": {
+    "enabled_by_default": true,
+    "cli_flag": "--use-llm",
+    "opt_out": "--no-llm-judge",
+    "provider": "openai",
+    "model": "gpt-4o",
+    "api_key_env": "OPENAI_API_KEY",
+    "source": "Full-Duplex-Bench/v3/evaluate_tool_calls.py and evaluate_pass_rate.py (model=\"gpt-4o\")"
+  },
+  "torch": {
+    "version": "2.14.0",
+    "cuda_index_url": "https://download.pytorch.org/whl/cu128",
+    "cpu_index_url": "https://download.pytorch.org/whl/cpu",
+    "gpu_used_for": "Local NVIDIA NeMo Parakeet TDT 0.6B v2 ASR during evaluation only. Gemini Live is hosted."
+  }
+}

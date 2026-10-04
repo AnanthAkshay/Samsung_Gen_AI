@@ -1,133 +1,321 @@
 #!/usr/bin/env bash
-# ==============================================================================
-# Full-Duplex-Bench v3: End-to-End Reproduction Script (Gemini Live Native)
-# ==============================================================================
-set -euo pipefail
+# Full-Duplex-Bench v3 one-command reproduction (Linux / macOS).
+# Requires bash (Ubuntu /bin/sh is dash; invoke this file directly).
+set -eu
+
+LIMIT=100
+USE_LLM_JUDGE=1
+FORCE=0
+
+usage() {
+    echo "Usage: ./reproduce.sh [--limit N] [--no-llm-judge] [--force]"
+    echo "  --limit N         Score the first N scenarios (default: 100)"
+    echo "  --no-llm-judge    Exact-match scoring only (offline smoke test)"
+    echo "  --force           Re-run inference even if result JSON already exists"
+}
+
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --limit|-l)
+            LIMIT="$2"
+            shift 2
+            ;;
+        --no-llm-judge)
+            USE_LLM_JUDGE=0
+            shift
+            ;;
+        --force)
+            FORCE=1
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unknown argument: $1"
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export PYTHONUTF8=1
+export PYTHONIOENCODING=utf-8
 
 echo "======================================================================"
-echo "Starting Full-Duplex-Bench v3 Reproduction Pipeline (Gemini Native)"
+echo " Samsung Gen AI Hackathon 3.0 (Theme 05: Interruptible Real-Time Agents)"
+echo " Reproduction Pipeline: Google Gemini Native Realtime + LiveKit Agents"
+echo " Benchmark: Full-Duplex-Bench v3 (arXiv:2604.04847) [Limit: ${LIMIT}]"
+if [ "$USE_LLM_JUDGE" -eq 1 ]; then
+    echo " Judge: ENABLED (OpenAI gpt-4o via FDB-v3 --use-llm)"
+else
+    echo " Judge: DISABLED (exact-match only)"
+fi
 echo "======================================================================"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+echo ""
+echo "[1/7] Verifying Python 3.10–3.12 and system packages..."
+
+is_supported_python() {
+    case "$1" in
+        3.10|3.11|3.12) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+PYTHON_BIN=""
+for candidate in python3.12 python3.11 python3.10 python3 python; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+        ver="$("$candidate" -c "import sys; print('%d.%d' % (sys.version_info.major, sys.version_info.minor))" 2>/dev/null || true)"
+        if is_supported_python "$ver"; then
+            PYTHON_BIN="$candidate"
+            echo "  Using $PYTHON_BIN ($ver)"
+            break
+        fi
+    fi
+done
+
+if [ -z "$PYTHON_BIN" ]; then
+    echo "Error: Python 3.10, 3.11, or 3.12 is required (found none on PATH)."
+    echo "On Ubuntu: sudo apt-get install -y python3.11 python3.11-venv python3-pip"
+    exit 1
+fi
+
+MISSING_PKGS=""
+if ! command -v git >/dev/null 2>&1; then
+    MISSING_PKGS="$MISSING_PKGS git"
+fi
+if ! command -v ffmpeg >/dev/null 2>&1; then
+    MISSING_PKGS="$MISSING_PKGS ffmpeg"
+fi
+if ! "$PYTHON_BIN" -c "import venv" >/dev/null 2>&1; then
+    MISSING_PKGS="$MISSING_PKGS python3-venv"
+fi
+
+# libsndfile is required by the soundfile wheel at import time.
+if ! "$PYTHON_BIN" -c "import ctypes.util, sys; sys.exit(0 if ctypes.util.find_library('sndfile') else 1)" >/dev/null 2>&1; then
+    if [ -e /usr/lib/x86_64-linux-gnu/libsndfile.so.1 ] || [ -e /usr/lib/aarch64-linux-gnu/libsndfile.so.1 ]; then
+        :
+    else
+        MISSING_PKGS="$MISSING_PKGS libsndfile1"
+    fi
+fi
+
+if [ -n "$MISSING_PKGS" ]; then
+    echo "Error: missing system packages:$MISSING_PKGS"
+    echo "Install on Ubuntu 22.04/24.04:"
+    echo "  sudo apt-get update && sudo apt-get install -y git ffmpeg libsndfile1 python3-venv python3-pip"
+    exit 1
+fi
+echo "  System packages present (git, ffmpeg, libsndfile)."
+
+VENV_DIR="${SCRIPT_DIR}/.venv"
+if [ ! -d "$VENV_DIR" ] && [ -d "${SCRIPT_DIR}/venv" ]; then
+    VENV_DIR="${SCRIPT_DIR}/venv"
+fi
+
+if [ ! -f "${VENV_DIR}/bin/python" ] && [ ! -f "${VENV_DIR}/Scripts/python.exe" ]; then
+    echo "  Creating virtual environment at ${VENV_DIR}..."
+    "$PYTHON_BIN" -m venv "$VENV_DIR"
+fi
+
+if [ -f "${VENV_DIR}/bin/python" ]; then
+    VENV_PYTHON="${VENV_DIR}/bin/python"
+else
+    VENV_PYTHON="${VENV_DIR}/Scripts/python.exe"
+fi
+
+echo "  Installing torch (CUDA or CPU), then pinned requirements, then NeMo..."
+"$VENV_PYTHON" "${SCRIPT_DIR}/scripts/install_deps.py"
+echo "  Dependencies installed."
+
+echo ""
+echo "[2/7] Validating credentials and configuration..."
+
 V3_DIR="${SCRIPT_DIR}/Full-Duplex-Bench/v3"
-VENV_DIR="${SCRIPT_DIR}/venv"
+ENV_FILE="${SCRIPT_DIR}/.env"
+ENV_LOCAL="${V3_DIR}/.env.local"
 
-# 1. Activate or create Python 3.10 virtual environment
-if [ -d "${VENV_DIR}" ]; then
-    echo " Activating existing virtual environment..."
-    # shellcheck disable=SC1091
-    source "${VENV_DIR}/bin/activate" 2>/dev/null || source "${VENV_DIR}/Scripts/activate" 2>/dev/null || true
-else
-    echo " Creating Python 3.10 virtual environment..."
-    python3.10 -m venv "${VENV_DIR}" || py -3.10 -m venv "${VENV_DIR}"
-    source "${VENV_DIR}/bin/activate" 2>/dev/null || source "${VENV_DIR}/Scripts/activate" 2>/dev/null || true
-fi
-
-# 2. Install pinned dependencies
-echo " Installing pinned dependencies..."
-pip install --upgrade pip
-pip install "livekit-agents[google]~=1.3" \
-            "livekit-plugins-google==1.8.3" \
-            "livekit[crypto]~=1.0" \
-            "pydub==0.25.1" \
-            "ffmpeg-python==0.2.0" \
-            "python-dotenv==1.2.3" \
-            "gdown==6.4.0" \
-            "numpy==2.2.6" \
-            "nemo_toolkit[asr]==3.0.0"
-
-# 3. Environment validation
-if [ -f "${V3_DIR}/.env.local" ]; then
-    echo " Loading environment from ${V3_DIR}/.env.local"
-    # shellcheck disable=SC1091
-    source "${V3_DIR}/.env.local" || true
-elif [ -f "${SCRIPT_DIR}/.env" ]; then
-    echo " Copying ${SCRIPT_DIR}/.env to ${V3_DIR}/.env.local"
-    cp "${SCRIPT_DIR}/.env" "${V3_DIR}/.env.local"
-    # shellcheck disable=SC1091
-    source "${V3_DIR}/.env.local" || true
-else
-    echo "❌ Error: Neither .env nor Full-Duplex-Bench/v3/.env.local found."
-    echo "Please copy .env.example to .env and configure LIVEKIT_* and GOOGLE_API_KEY."
+if [ ! -f "$ENV_FILE" ] && [ ! -f "$ENV_LOCAL" ]; then
+    echo "Error: Neither .env nor Full-Duplex-Bench/v3/.env.local was found."
+    echo "Copy .env.example to .env and set LIVEKIT_*, GOOGLE_API_KEY, and OPENAI_API_KEY:"
+    echo "  cp .env.example .env"
     exit 1
 fi
 
-if [ -z "${GOOGLE_API_KEY:-}" ]; then
-    echo "❌ Error: GOOGLE_API_KEY is not set."
-    exit 1
+if [ -f "$ENV_FILE" ]; then
+    cp "$ENV_FILE" "$ENV_LOCAL"
+    ENV_TO_LOAD="$ENV_FILE"
+else
+    ENV_TO_LOAD="$ENV_LOCAL"
 fi
 
-if [ -z "${LIVEKIT_URL:-}" ] || [ -z "${LIVEKIT_API_KEY:-}" ] || [ -z "${LIVEKIT_API_SECRET:-}" ]; then
-    echo "❌ Error: LiveKit credentials (LIVEKIT_URL, LIVEKIT_API_KEY, LIVEKIT_API_SECRET) missing."
+# Load KEY=VALUE lines into the environment without printing secrets.
+# Avoid process substitution so this works under bash without extra fds.
+while IFS= read -r line || [ -n "$line" ]; do
+    line="${line%$'\r'}"
+    case "$line" in
+        ''|\#*) continue ;;
+    esac
+    case "$line" in
+        *=*)
+            key="${line%%=*}"
+            value="${line#*=}"
+            key="${key%"${key##*[![:space:]]}"}"
+            export "$key=$value"
+            ;;
+    esac
+done < "$ENV_TO_LOAD"
+
+MISSING_KEYS=""
+for k in LIVEKIT_URL LIVEKIT_API_KEY LIVEKIT_API_SECRET GOOGLE_API_KEY; do
+    eval "val=\${$k-}"
+    case "$val" in
+        ''|your_*) MISSING_KEYS="$MISSING_KEYS $k" ;;
+    esac
+done
+
+if [ "$USE_LLM_JUDGE" -eq 1 ]; then
+    case "${OPENAI_API_KEY-}" in
+        ''|your_*) MISSING_KEYS="$MISSING_KEYS OPENAI_API_KEY" ;;
+    esac
+fi
+
+if [ -n "$MISSING_KEYS" ]; then
+    echo "Error: missing required credentials in .env:$MISSING_KEYS"
+    echo "LiveKit (free): https://cloud.livekit.io"
+    echo "Google AI Studio (Gemini Live): https://aistudio.google.com"
+    if [ "$USE_LLM_JUDGE" -eq 1 ]; then
+        echo "OpenAI (FDB-v3 gpt-4o judge, same as organizers): https://platform.openai.com"
+        echo "For an offline smoke test without OpenAI: ./reproduce.sh --limit 3 --no-llm-judge"
+    fi
     exit 1
 fi
 
 export LK_PROVIDER="${LK_PROVIDER:-gemini2_5}"
-echo " Model Provider: ${LK_PROVIDER}"
-
-# 4. Check benchmark audio dataset
-DATA_DIR="${V3_DIR}/fdb_v3_data_released"
-if [ ! -d "${DATA_DIR}" ]; then
-    echo "📥 Downloading benchmark audio dataset from Google Drive..."
-    gdown 1SO_4MTazWQ_jvCx0dtmpQ-t40bdd07yz -O "${V3_DIR}/fdb_v3_data.zip"
-    python -c "import zipfile; zipfile.ZipFile('${V3_DIR}/fdb_v3_data.zip', 'r').extractall('${V3_DIR}')"
+echo "  Credentials validated. Model provider: ${LK_PROVIDER}"
+if [ "$USE_LLM_JUDGE" -eq 1 ]; then
+    echo "  LLM judge: OpenAI gpt-4o (OPENAI_API_KEY present; value not printed)."
 fi
 
-# 5. Start Gemini Live agent worker in the background
-echo " Starting Gemini Live agent worker (lk_agent_tool.py)..."
+echo ""
+echo "[3/7] Verifying benchmark audio dataset..."
+echo "  FDB-v3 source is vendored in Full-Duplex-Bench/v3 (pinned commit in agent_config.json)."
+echo "  Audio is NOT in git; it is downloaded per the v3 README."
+
+DATA_DIR="${V3_DIR}/fdb_v3_data_released"
+ZIP_PATH="${V3_DIR}/fdb_v3_data.zip"
+DRIVE_ID="1SO_4MTazWQ_jvCx0dtmpQ-t40bdd07yz"
+
+need_data=0
+if [ ! -d "$DATA_DIR" ]; then
+    need_data=1
+else
+    _any="$(find "$DATA_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -n 1 || true)"
+    if [ -z "$_any" ]; then
+        need_data=1
+    fi
+fi
+
+if [ "$need_data" -eq 1 ]; then
+    if [ -f "$ZIP_PATH" ]; then
+        echo "  Extracting ${ZIP_PATH}..."
+        "$VENV_PYTHON" -c "import zipfile; zipfile.ZipFile(r'''${ZIP_PATH}''').extractall(r'''${V3_DIR}''')"
+    else
+        echo "  Downloading benchmark dataset via gdown..."
+        if ! "$VENV_PYTHON" -m gdown "$DRIVE_ID" -O "$ZIP_PATH"; then
+            echo "Automated dataset download failed (Google Drive quota or network)."
+            echo "Manual download:"
+            echo "  1. Open https://drive.google.com/file/d/${DRIVE_ID}/view?usp=sharing"
+            echo "  2. Save as fdb_v3_data.zip"
+            echo "  3. Place it at: ${ZIP_PATH}"
+            echo "  4. Extract so this exists: ${DATA_DIR}/<scenario_id>/input.wav"
+            echo "See Full-Duplex-Bench/v3/README.md (Data section)."
+            exit 1
+        fi
+        "$VENV_PYTHON" -c "import zipfile; zipfile.ZipFile(r'''${ZIP_PATH}''').extractall(r'''${V3_DIR}''')"
+    fi
+fi
+
+ITEM_COUNT="$(find "$DATA_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')"
+echo "  Benchmark audio ready (${ITEM_COUNT} scenario directories)."
+
+echo ""
+echo "[4/7] Launching Gemini Native Realtime agent worker (lk_agent_tool.py)..."
+
+mkdir -p "${SCRIPT_DIR}/logs"
+AGENT_STDOUT="${SCRIPT_DIR}/logs/gemini2_5_agent.stdout.log"
+AGENT_STDERR="${SCRIPT_DIR}/logs/gemini2_5_agent.stderr.log"
+
 cd "${V3_DIR}"
-python lk_agent_tool.py start > "${SCRIPT_DIR}/logs/gemini_agent.log" 2>&1 &
+"$VENV_PYTHON" lk_agent_tool.py start > "$AGENT_STDOUT" 2> "$AGENT_STDERR" &
 AGENT_PID=$!
-echo " Agent worker running (PID: ${AGENT_PID})"
 
-# Ensure agent is stopped on exit
 cleanup() {
-    echo " Shutting down agent worker (PID: ${AGENT_PID})..."
+    echo ""
+    echo "Stopping background agent worker (PID: ${AGENT_PID})..."
     kill "${AGENT_PID}" 2>/dev/null || true
+    wait "${AGENT_PID}" 2>/dev/null || true
 }
-trap cleanup EXIT
+trap cleanup EXIT INT TERM
 
-# Brief warm-up sleep
-sleep 5
+sleep 6
 
-# 6. Run streaming benchmark inference
-echo " Running benchmark inference for provider ${LK_PROVIDER}..."
-python run_tool_benchmark_all_released.py --provider "${LK_PROVIDER}" --force
+if ! kill -0 "${AGENT_PID}" 2>/dev/null; then
+    echo "Agent worker failed to start. Last log lines:"
+    tail -n 20 "$AGENT_STDERR" 2>/dev/null || true
+    exit 1
+fi
+echo "  Agent worker running (PID: ${AGENT_PID})."
 
-# 7. Run evaluation
-TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+echo ""
+echo "[5/7] Executing streaming benchmark inference (Limit: ${LIMIT})..."
+echo "  Resume: existing completed result_*.json files are skipped unless --force."
+BENCH_ARGS="run_tool_benchmark_all_released.py --provider ${LK_PROVIDER} --limit ${LIMIT}"
+if [ "$FORCE" -eq 1 ]; then
+    BENCH_ARGS="$BENCH_ARGS --force"
+fi
+# shellcheck disable=SC2086
+"$VENV_PYTHON" $BENCH_ARGS
+echo "  Streaming inference completed."
+
+echo ""
+echo "[6/7] Evaluating tool selection, pass rate, and latency..."
+TIMESTAMP="$(date +"%Y%m%d_%H%M%S")"
 RUN_ID="baseline_${TIMESTAMP}"
-RUN_DIR="${SCRIPT_DIR}/logs/${RUN_ID}"
-SNAPSHOT_DIR="${RUN_DIR}/fdb_v3_data_released"
-mkdir -p "${RUN_DIR}"
-while IFS= read -r -d '' RESULT_FILE; do
-    RELATIVE_PATH="${RESULT_FILE#${DATA_DIR}/}"
-    mkdir -p "${SNAPSHOT_DIR}/$(dirname "${RELATIVE_PATH}")"
-    cp "${RESULT_FILE}" "${SNAPSHOT_DIR}/${RELATIVE_PATH}"
-done < <(find "${DATA_DIR}" -type f -name "result_${LK_PROVIDER}.json" -print0)
-echo " Running evaluation..."
+RESULTS_DIR="${SCRIPT_DIR}/results/${RUN_ID}"
+mkdir -p "$RESULTS_DIR"
 
-echo " Running exact-match evaluation (LLM judge disabled)."
+SCORE_ARGS="${VENV_PYTHON} ${SCRIPT_DIR}/scripts/run_scoring.py --python ${VENV_PYTHON} --v3-dir ${V3_DIR} --data-dir ${DATA_DIR} --results-dir ${RESULTS_DIR} --provider ${LK_PROVIDER} --run-id ${RUN_ID} --limit ${LIMIT}"
+if [ "$USE_LLM_JUDGE" -eq 1 ]; then
+    SCORE_ARGS="$SCORE_ARGS --use-llm-judge"
+fi
+# shellcheck disable=SC2086
+$SCORE_ARGS
 
-python evaluate_tool_calls.py \
-    --benchmark benchmark_data_v2.json \
-    --results-dir "${SNAPSHOT_DIR}" \
-    --provider "${LK_PROVIDER}" \
-    --output "${RUN_DIR}/tool_calls_report.json"
+if [ -f "${SCRIPT_DIR}/agent_config.json" ]; then
+    cp "${SCRIPT_DIR}/agent_config.json" "${RESULTS_DIR}/agent_config.json"
+fi
+cp "$AGENT_STDOUT" "${RESULTS_DIR}/agent.stdout.log"
+cp "$AGENT_STDERR" "${RESULTS_DIR}/agent.stderr.log"
 
-python evaluate_pass_rate.py \
-    --benchmark benchmark_data_v2.json \
-    --results-dir "${SNAPSHOT_DIR}" \
-    --provider "${LK_PROVIDER}" \
-    --output "${RUN_DIR}/pass_rate_report.json"
+LATEST_DIR="${SCRIPT_DIR}/results/latest"
+rm -rf "$LATEST_DIR"
+mkdir -p "$LATEST_DIR"
+cp -R "${RESULTS_DIR}/." "$LATEST_DIR/"
 
-python summarize_evaluation.py \
-    --pass-rate-report "${RUN_DIR}/pass_rate_report.json" \
-    --tool-calls-report "${RUN_DIR}/tool_calls_report.json" \
-    --output "${RUN_DIR}/summary_metrics.json" \
-    --run-id "${RUN_ID}" \
-    --provider "${LK_PROVIDER}"
-
+echo ""
+echo "[7/7] Reproduction completed."
 echo "======================================================================"
-echo " Evaluation complete! Reports and summary saved in ${RUN_DIR}/"
+echo " Artifacts: ${RESULTS_DIR}"
+echo " Exact-match summary:"
+if [ -f "${RESULTS_DIR}/summary_exact_match.json" ]; then
+    cat "${RESULTS_DIR}/summary_exact_match.json"
+fi
+if [ -f "${RESULTS_DIR}/summary_llm_judge.json" ]; then
+    echo " LLM-judge (gpt-4o) summary:"
+    cat "${RESULTS_DIR}/summary_llm_judge.json"
+fi
 echo "======================================================================"

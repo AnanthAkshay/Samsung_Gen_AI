@@ -126,21 +126,64 @@ class LatencyTracker:
 
 
 import os
+import json
+import tempfile
 from dotenv import load_dotenv
 
+# Ensure /tmp exists on Windows to avoid FileNotFoundError
+try:
+    os.makedirs("/tmp", exist_ok=True)
+except Exception:
+    pass
+
 env_path = os.path.join(os.path.dirname(__file__), ".env.local")
-load_dotenv(env_path)
+if os.path.exists(env_path):
+    load_dotenv(env_path)
+root_env = os.path.join(os.path.dirname(__file__), "..", "..", ".env")
+if os.path.exists(root_env):
+    load_dotenv(root_env)
+load_dotenv()
 
 # ---------------------------------------------------------------------------
-# Configuration – change PROVIDER to switch between models
+# Centralized Configuration & Reproducibility Seeds
 # ---------------------------------------------------------------------------
-PROVIDER = os.getenv("LK_PROVIDER", "grok")
+_CONFIG_PATHS = [
+    os.path.join(os.path.dirname(__file__), "..", "..", "agent_config.json"),
+    os.path.join(os.path.dirname(__file__), "agent_config.json"),
+    "agent_config.json",
+]
+AGENT_CONFIG = {}
+for _cp in _CONFIG_PATHS:
+    if os.path.exists(_cp):
+        try:
+            with open(_cp, "r", encoding="utf-8") as _f:
+                AGENT_CONFIG = json.load(_f)
+            break
+        except Exception:
+            pass
+
+PROVIDER = os.getenv("LK_PROVIDER", AGENT_CONFIG.get("provider", "gemini2_5"))
+RANDOM_SEED = int(os.getenv("RANDOM_SEED", AGENT_CONFIG.get("seed", 42)))
+
+import random
+random.seed(RANDOM_SEED)
+try:
+    import numpy as np
+    np.random.seed(RANDOM_SEED)
+except ImportError:
+    pass
+try:
+    import torch
+    torch.manual_seed(RANDOM_SEED)
+except ImportError:
+    pass
+
 # Supported values:
+#   "gemini2_5"    – Google Gemini 2.5 Live API (Hackathon Theme 05 target)
+#   "gemini3_1"    – Google Gemini 3.1 Live API
 #   "grok"         – xAI Grok Voice Agent API
 #   "gpt_realtime" – OpenAI Realtime API
 #   "azure_openai" – Azure OpenAI Realtime API
-#   "gemini2_5"    – Google Gemini 2.5 Live API
-#   "gemini3_1"    – Google Gemini 3.1 Live API
 #   "ultravox"     – Ultravox Realtime
 
 if PROVIDER.lower() in {"gemini2_5", "gemini3_1"}:
@@ -184,16 +227,20 @@ def get_realtime_model():
 
     # ── Google Gemini 2.5 Live API ───────────────────────────────────
     elif provider == "gemini2_5":
+        model_name = os.getenv("GOOGLE_MODEL", AGENT_CONFIG.get("model", "gemini-2.5-flash-native-audio-preview-12-2025"))
+        voice_name = os.getenv("GOOGLE_VOICE", AGENT_CONFIG.get("voice", "Puck"))
         return google.realtime.RealtimeModel(
-            model="gemini-2.5-flash-native-audio-preview-12-2025",
-            voice=os.getenv("GOOGLE_VOICE", "Puck"),
+            model=model_name,
+            voice=voice_name,
         )
 
     # ── Google Gemini 3.1 Live API ───────────────────────────────────
     elif provider == "gemini3_1":
+        model_name = os.getenv("GOOGLE_MODEL", "gemini-3.1-flash-live-preview")
+        voice_name = os.getenv("GOOGLE_VOICE", AGENT_CONFIG.get("voice", "Puck"))
         return google.realtime.RealtimeModel(
-            model="gemini-3.1-flash-live-preview",
-            voice=os.getenv("GOOGLE_VOICE", "Puck"),
+            model=model_name,
+            voice=voice_name,
         )
 
     # ── Ultravox Realtime ─────────────────────────────────────────────

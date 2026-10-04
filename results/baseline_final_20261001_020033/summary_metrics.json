@@ -1,0 +1,52 @@
+{
+  "run_id": "baseline_final_20261001_020033",
+  "generated_at": "2026-10-01T16:04:18.223035+00:00",
+  "benchmark": "In-the-Wild Speech & Multi-Step Tool Calling (FDB-v3)",
+  "provider": "gemini2_5",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "evaluation_mode": "exact-match (no LLM judge)",
+  "scenarios": {
+    "expected": 100,
+    "evaluated_by_pass_rate": 100,
+    "evaluated_by_tool_calls": 100
+  },
+  "result_snapshot": "fdb_v3_data_released/",
+  "strict_pass_rate": {
+    "passed": 45,
+    "failed": 55,
+    "rate": 0.45
+  },
+  "failure_breakdown": {
+    "wrong_tools": 34,
+    "wrong_arguments": 21
+  },
+  "mean_tool_selection_f1": 0.823,
+  "mean_argument_accuracy": 0.528,
+  "latency": {
+    "mean_seconds": 11.732,
+    "samples_including_interruptions": 100,
+    "interruption_count": 5,
+    "note": "Mean excludes interruption samples, per evaluate_tool_calls.py."
+  },
+  "turn_taking": {
+    "total": 100,
+    "turn_taken": 100,
+    "no_response": 0,
+    "turn_take_rate": 1.0
+  },
+  "pass_rate_by_domain": {
+    "ecommerce_support": 0.586,
+    "finance_billing": 0.92,
+    "housing_location": 0.115,
+    "travel_identity": 0.1
+  },
+  "pass_rate_by_difficulty": {
+    "easy": 0.528,
+    "medium": 0.412,
+    "hard": 0.4
+  },
+  "reports": {
+    "pass_rate": "pass_rate_report.json",
+    "tool_calls": "tool_calls_report.json"
+  }
+}

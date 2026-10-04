@@ -121,9 +121,43 @@ def main():
     parser.add_argument(
         "--asr-only", action="store_true", help="Skip inference, only run ASR"
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Limit number of scenarios to evaluate (for smoke testing, e.g. --limit 3)",
+    )
     args = parser.parse_args()
     if args.retries < 0 or args.retry_backoff < 0:
         parser.error("--retries and --retry-backoff must be non-negative")
+
+    # Fix reproducibility seeds
+    seed = 42
+    config_candidates = [
+        PROJECT_ROOT.parent.parent / "agent_config.json",
+        PROJECT_ROOT / "agent_config.json",
+        Path("agent_config.json"),
+    ]
+    for cp in config_candidates:
+        if cp.exists():
+            try:
+                with open(cp, "r", encoding="utf-8") as f:
+                    seed = json.load(f).get("seed", 42)
+                break
+            except Exception:
+                pass
+    import random
+    random.seed(seed)
+    try:
+        import numpy as np
+        np.random.seed(seed)
+    except ImportError:
+        pass
+    try:
+        import torch
+        torch.manual_seed(seed)
+    except ImportError:
+        pass
 
     root_dir = Path(args.root_dir)
     if not root_dir.exists():
@@ -154,6 +188,10 @@ def main():
             f"📋 Merged {len(_PER_FOLDER_DATA)} per-folder metadata.json entries → {len(data)} total"
         )
     print(f"📂 Found {len(inputs)} input.wav files")
+
+    if args.limit is not None and args.limit > 0:
+        inputs = inputs[: args.limit]
+        print(f"🔬 Smoke-test mode: limited to first {len(inputs)} scenario(s)")
 
     if not inputs:
         print("Done (no files to process).")

@@ -9,13 +9,13 @@
 
 # 1. Team Details
 
-| Field                          | Details                                   |
-| :----------------------------- | :---------------------------------------- |
-| **Team Name**                  | Cache_Me / Samsung_Gen_AI_Hackathon_3.0   |
-| **Project / Product Name**     | Full-Bench-Duplex                         |
-| **Theme**                      | Theme 05 — Interruptible Real-Time Agents |
-| **Organization / Institution** | M S Ramaiah Institute of Technology (MSRIT)|
-| **Submission Date**            | 30-09-2026                                |
+| Field                          | Details                                     |
+| :----------------------------- | :------------------------------------------ |
+| **Team Name**                  | Cache_Me / Samsung_Gen_AI_Hackathon_3.0     |
+| **Project / Product Name**     | Full-Bench-Duplex                           |
+| **Theme**                      | Theme 05 — Interruptible Real-Time Agents   |
+| **Organization / Institution** | M S Ramaiah Institute of Technology (MSRIT) |
+| **Submission Date**            | 30-09-2026                                  |
 
 ---
 
@@ -31,15 +31,15 @@ AI was used both as part of the submitted system and as a development-assistance
 
 # 3. Purpose of AI Usage
 
-| Purpose                             |     Used?    | Details                                                                                                       |
+| Purpose                             |    Used?     | Details                                                                                                       |
 | :---------------------------------- | :----------: | :------------------------------------------------------------------------------------------------------------ |
-| **Idea generation / brainstorming** |      Yes     | AI-assisted discussion and exploration of implementation approaches during development.                       |
-| **Code generation or assistance**   |      Yes     | Claude was used interactively for code review, debugging assistance, and development support.                 |
+| **Idea generation / brainstorming** |     Yes      | AI-assisted discussion and exploration of implementation approaches during development.                       |
+| **Code generation or assistance**   |     Yes      | Claude was used interactively for code review, debugging assistance, and development support.                 |
 | **UI / UX design**                  | No / Limited | No AI-generated UI was used as a core component of the submitted system.                                      |
-| **Content creation**                |      Yes     | AI assistance was used for technical documentation, README content, and project documentation.                |
-| **Data analysis**                   |      Yes     | AI-assisted development and review of benchmark/evaluation workflows.                                         |
-| **Testing / debugging**             |      Yes     | Claude assisted with debugging the benchmark harness, evaluation scripts, and reproduction workflows.         |
-| **Other**                           |      Yes     | Gemini was used to verify Gemini Live API usage patterns and `livekit-plugins-google` integration approaches. |
+| **Content creation**                |     Yes      | AI assistance was used for technical documentation, README content, and project documentation.                |
+| **Data analysis**                   |     Yes      | AI-assisted development and review of benchmark/evaluation workflows.                                         |
+| **Testing / debugging**             |     Yes      | Claude assisted with debugging the benchmark harness, evaluation scripts, and reproduction workflows.         |
+| **Other**                           |     Yes      | Gemini was used to verify Gemini Live API usage patterns and `livekit-plugins-google` integration approaches. |
 
 ---
 
@@ -53,12 +53,12 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** Gemini 2.5 Flash Native Audio through the Gemini Live API.
-* **Role:** Primary AI model in the submitted system.
-* **Purpose:** Handles speech understanding, intent detection, function calling, and audio response synthesis end-to-end.
-* **Prompt Used:** The agent system prompt in `lk_agent_tool.py` (`VoiceAgent.instructions`) was authored and reviewed by the team.
-* **Output Summary:** Real-time conversational audio responses and tool/function calls based on user input.
-* **Modification:** The team designed the agent behavior, system instructions, tool definitions, and integration logic. AI-generated model output is used at runtime as part of the submitted system.
+- **AI Tool / Platform Used:** Gemini 2.5 Flash Native Audio through the Gemini Live API.
+- **Role:** Primary AI model in the submitted system.
+- **Purpose:** Handles speech understanding, intent detection, function calling, and audio response synthesis end-to-end.
+- **Prompt Used:** The agent system prompt in `lk_agent_tool.py` (`VoiceAgent.instructions`) was authored and reviewed by the team.
+- **Output Summary:** Real-time conversational audio responses and tool/function calls based on user input.
+- **Modification:** The team designed the agent behavior, system instructions, tool definitions, and integration logic. AI-generated model output is used at runtime as part of the submitted system.
 
 ---
 
@@ -70,11 +70,11 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** Gemini 2.5 Flash Native Audio / Gemini Live API.
-* **Role:** Provides the real-time conversational intelligence required for interactive voice-agent behavior.
-* **Prompt Used:** Human-authored system instructions defining the expected agent behavior.
-* **Output Summary:** The model processes live conversational input and produces corresponding responses while supporting the application's real-time interaction flow.
-* **Modification:** The team implemented and integrated the real-time agent infrastructure, tool handling, interruption flow, and surrounding application logic.
+- **AI Tool / Platform Used:** Gemini 2.5 Flash Native Audio / Gemini Live API.
+- **Role:** Provides the real-time conversational intelligence required for interactive voice-agent behavior.
+- **Prompt Used:** Human-authored system instructions defining the expected agent behavior.
+- **Output Summary:** The model processes live conversational input and produces corresponding responses while supporting the application's real-time interaction flow.
+- **Modification:** The team implemented and integrated the real-time agent infrastructure, tool handling, interruption flow, and surrounding application logic.
 
 ---
 
@@ -86,12 +86,12 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** Gemini 2.5 Flash Native Audio through Gemini Live API.
-* **Role:** Detects when an available function/tool should be invoked and produces the required function-call information.
-* **Prompt Used:** Tool behavior and descriptions were defined by the team within the application.
-* **Output Summary:** Structured tool/function calls generated by the agent based on conversational context.
-* **Modification:** Tool definitions, application-side execution, argument handling, and integration were implemented and reviewed by the team.
-* **Additional Clarification:** No benchmark scenario IDs, dialogue text, or expected answers are hardcoded into the tool definitions.
+- **AI Tool / Platform Used:** Gemini 2.5 Flash Native Audio through Gemini Live API.
+- **Role:** Detects when an available function/tool should be invoked and produces the required function-call information.
+- **Prompt Used:** Tool behavior and descriptions were defined by the team within the application.
+- **Output Summary:** Structured tool/function calls generated by the agent based on conversational context.
+- **Modification:** Tool definitions, application-side execution, argument handling, and integration were implemented and reviewed by the team.
+- **Additional Clarification:** No benchmark scenario IDs, dialogue text, or expected answers are hardcoded into the tool definitions.
 
 ---
 
@@ -103,12 +103,12 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** NVIDIA Parakeet TDT 0.6B v2 via HuggingFace.
-* **Role:** Benchmark-only automatic speech recognition (ASR).
-* **Prompt Used:** Not applicable; the model is used for automatic speech transcription.
-* **Output Summary:** Transcriptions of input and output audio used for latency measurement and tool-call extraction during evaluation.
-* **Modification:** Integrated into `run_tool_benchmark_all_released.py` as part of the evaluation pipeline.
-* **Important Clarification:** Parakeet is **not used during agent inference** and is not part of the submitted agent's runtime model stack.
+- **AI Tool / Platform Used:** NVIDIA Parakeet TDT 0.6B v2 via HuggingFace.
+- **Role:** Benchmark-only automatic speech recognition (ASR).
+- **Prompt Used:** Not applicable; the model is used for automatic speech transcription.
+- **Output Summary:** Transcriptions of input and output audio used for latency measurement and tool-call extraction during evaluation.
+- **Modification:** Integrated into `run_tool_benchmark_all_released.py` as part of the evaluation pipeline.
+- **Important Clarification:** Parakeet is **not used during agent inference** and is not part of the submitted agent's runtime model stack.
 
 ---
 
@@ -120,13 +120,13 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tools Used During Development:** Claude (Sonnet / Opus).
-* **Role:** Assisted with code review, debugging, and refinement of the benchmark/evaluation harness.
-* **Prompt Used:** Interactive development and debugging prompts concerning evaluation scripts and benchmark workflows.
-* **Output Summary:** Suggestions, debugging assistance, and documentation/reproduction support.
-* **Modification:** All evaluation logic and final benchmark scripts were reviewed and integrated by the team.
-* **Evaluation Method:** Reported F1, pass rate, and latency metrics use exact-match evaluation.
-* **Clarification:** GPT-4o was **not used for the reported benchmark results**.
+- **AI Tools Used During Development:** Claude (Sonnet / Opus).
+- **Role:** Assisted with code review, debugging, and refinement of the benchmark/evaluation harness.
+- **Prompt Used:** Interactive development and debugging prompts concerning evaluation scripts and benchmark workflows.
+- **Output Summary:** Suggestions, debugging assistance, and documentation/reproduction support.
+- **Modification:** All evaluation logic and final benchmark scripts were reviewed and integrated by the team.
+- **Evaluation Method:** Reported F1, pass rate, and latency metrics use exact-match evaluation.
+- **Clarification:** GPT-4o was **not used for the reported benchmark results**.
 
 ---
 
@@ -138,12 +138,12 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** GPT-4o.
-* **Provider:** OpenAI.
-* **Role:** Optional LLM judge available through the `--use-llm` option in `evaluate_tool_calls.py` and `evaluate_pass_rate.py`.
-* **Output Summary:** Can provide a `response_qual` score for response-quality evaluation.
-* **Modification:** Integrated as an optional evaluation path.
-* **Important Clarification:** GPT-4o was **not used in the submitted agent** and **was not used for any reported benchmark results**. Reported metrics were generated without an OpenAI API key using exact-match evaluation.
+- **AI Tool / Platform Used:** GPT-4o.
+- **Provider:** OpenAI.
+- **Role:** Optional LLM judge available through the `--use-llm` option in `evaluate_tool_calls.py` and `evaluate_pass_rate.py`.
+- **Output Summary:** Can provide a `response_qual` score for response-quality evaluation.
+- **Modification:** Integrated as an optional evaluation path.
+- **Important Clarification:** GPT-4o was **not used in the submitted agent** and **was not used for any reported benchmark results**. Reported metrics were generated without an OpenAI API key using exact-match evaluation.
 
 ---
 
@@ -155,13 +155,13 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** Claude (Sonnet / Opus) via Antigravity IDE.
-* **Provider:** Anthropic.
-* **Purpose:** Code review, debugging, benchmark-harness development, reproduction-script drafting, and technical documentation.
-* **Prompt Used:** Interactive development prompts relating to code review, debugging, benchmark execution, documentation, and reproduction workflows.
-* **Output Summary:** Suggestions, explanations, debugging assistance, code/documentation drafts, and review feedback.
-* **Modification:** Team members reviewed, modified, tested, and integrated the resulting suggestions.
-* **Clarification:** Claude did not autonomously generate the benchmark-facing agent prompts or tool definitions. Final implementation decisions were made by human team members.
+- **AI Tool / Platform Used:** Claude (Sonnet / Opus) via Antigravity IDE.
+- **Provider:** Anthropic.
+- **Purpose:** Code review, debugging, benchmark-harness development, reproduction-script drafting, and technical documentation.
+- **Prompt Used:** Interactive development prompts relating to code review, debugging, benchmark execution, documentation, and reproduction workflows.
+- **Output Summary:** Suggestions, explanations, debugging assistance, code/documentation drafts, and review feedback.
+- **Modification:** Team members reviewed, modified, tested, and integrated the resulting suggestions.
+- **Clarification:** Claude did not autonomously generate the benchmark-facing agent prompts or tool definitions. Final implementation decisions were made by human team members.
 
 ---
 
@@ -173,11 +173,11 @@ AI was used both as part of the submitted system and as a development-assistance
 
 **Description:**
 
-* **AI Tool / Platform Used:** Gemini Chat / Google AI Studio.
-* **Provider:** Google.
-* **Purpose:** Checking Gemini Live API usage patterns and `livekit-plugins-google` integration approaches.
-* **Output Summary:** Technical guidance and examples related to API usage and integration.
-* **Modification:** The team independently implemented and adapted the integration for the project.
+- **AI Tool / Platform Used:** Gemini Chat / Google AI Studio.
+- **Provider:** Google.
+- **Purpose:** Checking Gemini Live API usage patterns and `livekit-plugins-google` integration approaches.
+- **Output Summary:** Technical guidance and examples related to API usage and integration.
+- **Modification:** The team independently implemented and adapted the integration for the project.
 
 ---
 
@@ -251,11 +251,11 @@ Because the replay was dominated by silent outputs and a severe runtime stall, i
 
 # 9. Ethical & Compliance Confirmation
 
-* [x] **AI usage complies with applicable hackathon guidelines and policies.**
-* [x] **No proprietary or copyrighted data was knowingly misused for AI development.**
-* [x] **No benchmark data was used to fine-tune the submitted model.**
-* [x] **AI-generated outputs used during development were reviewed by team members.**
-* [x] **The submitted agent and benchmark-facing prompts/tool definitions were finalized by human team members.**
+- [x] **AI usage complies with applicable hackathon guidelines and policies.**
+- [x] **No proprietary or copyrighted data was knowingly misused for AI development.**
+- [x] **No benchmark data was used to fine-tune the submitted model.**
+- [x] **AI-generated outputs used during development were reviewed by team members.**
+- [x] **The submitted agent and benchmark-facing prompts/tool definitions were finalized by human team members.**
 
 ---
 
@@ -263,12 +263,12 @@ Because the replay was dominated by silent outputs and a severe runtime stall, i
 
 We hereby declare that the information provided in this AI Usage Disclosure is accurate to the best of our knowledge and represents the AI tools, models, and AI-assisted development practices used in developing the submitted project.
 
-| Field                           | Details                        |
-| :------------------------------ | :----------------------------- |
-| **Name of Team Representative** | Akshay A |
+| Field                           | Details            |
+| :------------------------------ | :----------------- |
+| **Name of Team Representative** | Akshay A           |
 | **Role**                        | Software Developer |
-| **Signature**                   | Akshay A |
-| **Date**                        | 30-09-2026 |
+| **Signature**                   | Akshay A           |
+| **Date**                        | 30-09-2026         |
 
 ---
 

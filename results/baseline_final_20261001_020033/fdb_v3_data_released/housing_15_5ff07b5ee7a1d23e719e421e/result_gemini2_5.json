@@ -1,0 +1,393 @@
+{
+  "pid": "5ff07b5ee7a1d23e719e421e",
+  "example_id": "housing_15",
+  "category": "housing_location",
+  "title": "False Start then Search",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-10-01T03:24:45.577423",
+  "inference_time_s": 54.04,
+  "room_name": "eval-2e2931c6",
+  "stream_start_time": 1790805290.3441672,
+  "input_transcript": "Um so hmm uh I wanted um to check the commute from that one listing. Actually let me skip that for now. Could you just search for a three-bedroom in Atlanta that's pet-friendly? I've got two cats.",
+  "input_asr_chunks": [
+    {
+      "text": "Um",
+      "timestamp": [
+        0.32,
+        0.88
+      ]
+    },
+    {
+      "text": "so",
+      "timestamp": [
+        1.2,
+        1.44
+      ]
+    },
+    {
+      "text": "hmm",
+      "timestamp": [
+        1.6,
+        2.4
+      ]
+    },
+    {
+      "text": "uh",
+      "timestamp": [
+        3.2800000000000002,
+        3.6
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        3.92,
+        4.16
+      ]
+    },
+    {
+      "text": "wanted",
+      "timestamp": [
+        4.16,
+        4.64
+      ]
+    },
+    {
+      "text": "um",
+      "timestamp": [
+        4.8,
+        5.04
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        5.2,
+        5.44
+      ]
+    },
+    {
+      "text": "check",
+      "timestamp": [
+        5.44,
+        5.84
+      ]
+    },
+    {
+      "text": "the",
+      "timestamp": [
+        5.84,
+        6.08
+      ]
+    },
+    {
+      "text": "commute",
+      "timestamp": [
+        6.08,
+        6.5600000000000005
+      ]
+    },
+    {
+      "text": "from",
+      "timestamp": [
+        6.5600000000000005,
+        6.8
+      ]
+    },
+    {
+      "text": "that",
+      "timestamp": [
+        6.8,
+        7.12
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        7.12,
+        7.36
+      ]
+    },
+    {
+      "text": "listing.",
+      "timestamp": [
+        7.36,
+        8.24
+      ]
+    },
+    {
+      "text": "Actually",
+      "timestamp": [
+        8.56,
+        8.96
+      ]
+    },
+    {
+      "text": "let",
+      "timestamp": [
+        9.28,
+        9.44
+      ]
+    },
+    {
+      "text": "me",
+      "timestamp": [
+        9.44,
+        9.68
+      ]
+    },
+    {
+      "text": "skip",
+      "timestamp": [
+        9.68,
+        10.0
+      ]
+    },
+    {
+      "text": "that",
+      "timestamp": [
+        10.0,
+        10.24
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        10.24,
+        10.56
+      ]
+    },
+    {
+      "text": "now.",
+      "timestamp": [
+        10.56,
+        10.88
+      ]
+    },
+    {
+      "text": "Could",
+      "timestamp": [
+        11.200000000000001,
+        11.52
+      ]
+    },
+    {
+      "text": "you",
+      "timestamp": [
+        11.52,
+        11.68
+      ]
+    },
+    {
+      "text": "just",
+      "timestamp": [
+        11.68,
+        11.92
+      ]
+    },
+    {
+      "text": "search",
+      "timestamp": [
+        11.92,
+        12.24
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        12.24,
+        12.48
+      ]
+    },
+    {
+      "text": "a",
+      "timestamp": [
+        12.48,
+        12.8
+      ]
+    },
+    {
+      "text": "three-bedroom",
+      "timestamp": [
+        12.8,
+        13.76
+      ]
+    },
+    {
+      "text": "in",
+      "timestamp": [
+        13.76,
+        13.92
+      ]
+    },
+    {
+      "text": "Atlanta",
+      "timestamp": [
+        13.92,
+        14.96
+      ]
+    },
+    {
+      "text": "that's",
+      "timestamp": [
+        14.96,
+        15.36
+      ]
+    },
+    {
+      "text": "pet-friendly?",
+      "timestamp": [
+        15.36,
+        16.240000000000002
+      ]
+    },
+    {
+      "text": "I've",
+      "timestamp": [
+        16.4,
+        16.8
+      ]
+    },
+    {
+      "text": "got",
+      "timestamp": [
+        16.8,
+        17.12
+      ]
+    },
+    {
+      "text": "two",
+      "timestamp": [
+        17.12,
+        17.44
+      ]
+    },
+    {
+      "text": "cats.",
+      "timestamp": [
+        17.44,
+        18.400000000000002
+      ]
+    }
+  ],
+  "user_speech_end_rel": 18.400000000000002,
+  "latency": {
+    "input_duration_s": 48.42,
+    "output_duration_s": 48.42,
+    "first_speech_s": 34.95
+  },
+  "user_done_unix": 1790805308.7441673,
+  "transcript": "Sure, I can search for three-bedroom apartments in Atlanta. What is your maximum monthly budget?",
+  "asr_chunks": [
+    {
+      "text": "Sure,",
+      "timestamp": [
+        34.88,
+        35.2
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        35.36,
+        35.52
+      ]
+    },
+    {
+      "text": "can",
+      "timestamp": [
+        35.52,
+        35.68
+      ]
+    },
+    {
+      "text": "search",
+      "timestamp": [
+        35.68,
+        35.92
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        35.92,
+        36.08
+      ]
+    },
+    {
+      "text": "three-bedroom",
+      "timestamp": [
+        36.160000000000004,
+        36.800000000000004
+      ]
+    },
+    {
+      "text": "apartments",
+      "timestamp": [
+        36.800000000000004,
+        37.2
+      ]
+    },
+    {
+      "text": "in",
+      "timestamp": [
+        37.2,
+        37.28
+      ]
+    },
+    {
+      "text": "Atlanta.",
+      "timestamp": [
+        37.28,
+        37.76
+      ]
+    },
+    {
+      "text": "What",
+      "timestamp": [
+        38.08,
+        38.32
+      ]
+    },
+    {
+      "text": "is",
+      "timestamp": [
+        38.32,
+        38.480000000000004
+      ]
+    },
+    {
+      "text": "your",
+      "timestamp": [
+        38.480000000000004,
+        38.72
+      ]
+    },
+    {
+      "text": "maximum",
+      "timestamp": [
+        38.72,
+        39.2
+      ]
+    },
+    {
+      "text": "monthly",
+      "timestamp": [
+        39.2,
+        39.6
+      ]
+    },
+    {
+      "text": "budget?",
+      "timestamp": [
+        39.6,
+        40.4
+      ]
+    }
+  ],
+  "perceived_total_latency": 16.48,
+  "audio_agent_speech_start": 34.88,
+  "actual_tool_calls": [],
+  "status": "completed",
+  "attempts": 1
+}

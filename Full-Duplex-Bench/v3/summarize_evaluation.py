@@ -25,6 +25,11 @@ def main() -> None:
     parser.add_argument("--run-id", required=True)
     parser.add_argument("--provider", default="gemini2_5")
     parser.add_argument("--expected-scenarios", type=int, default=100)
+    parser.add_argument(
+        "--evaluation-mode",
+        default="exact-match (no LLM judge)",
+        help="Label stored in summary_metrics.json (exact-match vs llm-judge).",
+    )
     args = parser.parse_args()
 
     pass_report = load_report(args.pass_rate_report)
@@ -46,7 +51,7 @@ def main() -> None:
         "benchmark": "In-the-Wild Speech & Multi-Step Tool Calling (FDB-v3)",
         "provider": args.provider,
         "model": MODELS.get(args.provider),
-        "evaluation_mode": "exact-match (no LLM judge)",
+        "evaluation_mode": args.evaluation_mode,
         "scenarios": {
             "expected": args.expected_scenarios,
             "evaluated_by_pass_rate": pass_count,

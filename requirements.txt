@@ -1,0 +1,52 @@
+# ==============================================================================
+# Pinned dependencies for Samsung PRISM Hackathon Theme 05 (Cache_Me)
+# Python: 3.10, 3.11, or 3.12 (64-bit)
+# Platform: Linux (organizer default) and Windows
+#
+# Do NOT pip-install this file until torch is installed from the CUDA (or CPU)
+# index. reproduce.sh / reproduce.ps1 call scripts/install_deps.py which:
+#   1. Installs torch==2.14.0 from https://download.pytorch.org/whl/cu128
+#      (CUDA 12.x/13.x hosts) or https://download.pytorch.org/whl/cpu (no GPU)
+#   2. Installs this file
+#   3. Installs nemo-toolkit==3.0.0
+#   4. On Python 3.10 only, installs backports.tarfile==1.2.0
+#
+# GPU usage: the Gemini Live agent is hosted (no local GPU). A GPU is used only
+# for local NVIDIA NeMo Parakeet ASR during FDB-v3 scoring. CPU ASR works, slowly.
+#
+# Windows-only packages (pywin32, pywinpty, colorama) are intentionally omitted.
+# ==============================================================================
+
+# LiveKit Core and Agents Framework
+livekit==1.1.18
+livekit-agents==1.8.3
+livekit-api==1.2.1
+livekit-protocol==1.1.27
+livekit-plugins-google==1.8.3
+livekit-plugins-openai==1.8.3
+livekit-plugins-silero==1.8.3
+
+# Google GenAI SDK (Gemini Live Realtime backend)
+google-genai==2.25.0
+google-api-core==2.39.0
+
+# OpenAI SDK: FDB-v3 LLM judge (evaluate_*.py --use-llm, pinned model gpt-4o)
+openai==1.109.1
+
+# Audio Processing & Transcoding
+pydub==0.25.1
+ffmpeg-python==0.2.0
+soundfile==0.14.0
+scipy==1.15.3
+
+# Benchmark Utilities & Datasets
+python-dotenv==1.2.3
+gdown==6.4.0
+numpy==2.2.6
+
+# Supporting Framework Libraries
+pydantic==2.13.5
+typer==0.27.2
+websockets==16.1.1
+aiofiles==25.1.0
+aiohttp==3.14.3

@@ -1,0 +1,343 @@
+{
+  "pid": "66f59c766e7e22e1f90d08f6",
+  "example_id": "travel_16",
+  "category": "travel_identity",
+  "title": "Filler-Heavy Flight Search",
+  "provider": "gemini2_5",
+  "evaluated_at": "2026-10-01T03:50:21.955124",
+  "inference_time_s": 51.86,
+  "room_name": "eval-5b777207",
+  "stream_start_time": 1790806826.5251822,
+  "input_transcript": "Hmm, like I've been thinking about it and um I need to book flights to um Vegas. I'm looking at going around um August 8th if there's anything available.",
+  "input_asr_chunks": [
+    {
+      "text": "Hmm,",
+      "timestamp": [
+        0.72,
+        1.44
+      ]
+    },
+    {
+      "text": "like",
+      "timestamp": [
+        1.76,
+        2.08
+      ]
+    },
+    {
+      "text": "I've",
+      "timestamp": [
+        2.24,
+        2.64
+      ]
+    },
+    {
+      "text": "been",
+      "timestamp": [
+        2.64,
+        2.8000000000000003
+      ]
+    },
+    {
+      "text": "thinking",
+      "timestamp": [
+        2.8000000000000003,
+        3.2
+      ]
+    },
+    {
+      "text": "about",
+      "timestamp": [
+        3.2,
+        3.52
+      ]
+    },
+    {
+      "text": "it",
+      "timestamp": [
+        3.52,
+        3.6
+      ]
+    },
+    {
+      "text": "and",
+      "timestamp": [
+        3.92,
+        4.24
+      ]
+    },
+    {
+      "text": "um",
+      "timestamp": [
+        4.5600000000000005,
+        4.88
+      ]
+    },
+    {
+      "text": "I",
+      "timestamp": [
+        5.5200000000000005,
+        5.76
+      ]
+    },
+    {
+      "text": "need",
+      "timestamp": [
+        5.76,
+        5.92
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        5.92,
+        6.08
+      ]
+    },
+    {
+      "text": "book",
+      "timestamp": [
+        6.08,
+        6.4
+      ]
+    },
+    {
+      "text": "flights",
+      "timestamp": [
+        6.4,
+        7.04
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        7.04,
+        7.36
+      ]
+    },
+    {
+      "text": "um",
+      "timestamp": [
+        7.36,
+        7.68
+      ]
+    },
+    {
+      "text": "Vegas.",
+      "timestamp": [
+        7.92,
+        8.8
+      ]
+    },
+    {
+      "text": "I'm",
+      "timestamp": [
+        9.120000000000001,
+        9.44
+      ]
+    },
+    {
+      "text": "looking",
+      "timestamp": [
+        9.44,
+        9.76
+      ]
+    },
+    {
+      "text": "at",
+      "timestamp": [
+        9.76,
+        10.08
+      ]
+    },
+    {
+      "text": "going",
+      "timestamp": [
+        10.08,
+        10.4
+      ]
+    },
+    {
+      "text": "around",
+      "timestamp": [
+        10.4,
+        10.72
+      ]
+    },
+    {
+      "text": "um",
+      "timestamp": [
+        10.88,
+        11.200000000000001
+      ]
+    },
+    {
+      "text": "August",
+      "timestamp": [
+        11.52,
+        12.08
+      ]
+    },
+    {
+      "text": "8th",
+      "timestamp": [
+        12.08,
+        12.56
+      ]
+    },
+    {
+      "text": "if",
+      "timestamp": [
+        12.72,
+        12.88
+      ]
+    },
+    {
+      "text": "there's",
+      "timestamp": [
+        12.88,
+        13.200000000000001
+      ]
+    },
+    {
+      "text": "anything",
+      "timestamp": [
+        13.200000000000001,
+        13.52
+      ]
+    },
+    {
+      "text": "available.",
+      "timestamp": [
+        13.52,
+        14.32
+      ]
+    }
+  ],
+  "user_speech_end_rel": 14.32,
+  "latency": {
+    "input_duration_s": 45.9,
+    "output_duration_s": 45.9,
+    "first_speech_s": 29.15
+  },
+  "user_done_unix": 1790806840.8451822,
+  "search_latency_breakdown": {
+    "room": "eval-5b777207",
+    "tool": "Search Tool",
+    "reasoning": 18.902,
+    "execution": 0.357,
+    "synthesis": 1.183,
+    "total": 20.441,
+    "agent_start_at": 1790806853.9590204
+  },
+  "absolute_total_latency": 13.114,
+  "transcript": "I found one flight to Las Vegas on August 8th, 2027, for $450.",
+  "asr_chunks": [
+    {
+      "text": "I",
+      "timestamp": [
+        29.04,
+        29.28
+      ]
+    },
+    {
+      "text": "found",
+      "timestamp": [
+        29.28,
+        29.6
+      ]
+    },
+    {
+      "text": "one",
+      "timestamp": [
+        29.6,
+        29.84
+      ]
+    },
+    {
+      "text": "flight",
+      "timestamp": [
+        29.84,
+        30.16
+      ]
+    },
+    {
+      "text": "to",
+      "timestamp": [
+        30.16,
+        30.32
+      ]
+    },
+    {
+      "text": "Las",
+      "timestamp": [
+        30.32,
+        30.560000000000002
+      ]
+    },
+    {
+      "text": "Vegas",
+      "timestamp": [
+        30.560000000000002,
+        31.04
+      ]
+    },
+    {
+      "text": "on",
+      "timestamp": [
+        31.04,
+        31.2
+      ]
+    },
+    {
+      "text": "August",
+      "timestamp": [
+        31.2,
+        31.6
+      ]
+    },
+    {
+      "text": "8th,",
+      "timestamp": [
+        31.6,
+        31.92
+      ]
+    },
+    {
+      "text": "2027,",
+      "timestamp": [
+        32.0,
+        32.72
+      ]
+    },
+    {
+      "text": "for",
+      "timestamp": [
+        32.8,
+        33.04
+      ]
+    },
+    {
+      "text": "$450.",
+      "timestamp": [
+        33.04,
+        34.08
+      ]
+    }
+  ],
+  "perceived_total_latency": 14.72,
+  "audio_agent_speech_start": 29.04,
+  "actual_tool_calls": [
+    {
+      "function": "search_flights",
+      "args": {
+        "destination": "Las Vegas",
+        "date": "2027-08-08"
+      },
+      "timestamp_start": 25.89,
+      "timestamp_end": 26.25
+    }
+  ],
+  "status": "completed",
+  "attempts": 1
+}

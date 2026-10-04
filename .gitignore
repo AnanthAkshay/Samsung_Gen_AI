@@ -34,8 +34,13 @@ wheels/
 .installed.cfg
 *.egg
 
-# Benchmark audio datasets & media files
+# Node (upstream v1 sample app; not used for Theme 05)
+node_modules/
+
+# Benchmark audio datasets & media files (download per Full-Duplex-Bench/v3/README.md)
 fdb_v3_data_released/
+Full-Duplex-Bench/v3/fdb_v3_data_released/
+Full-Duplex-Bench/v3/fdb_v3_data.zip
 data/
 *.wav
 *.mp3
@@ -49,7 +54,11 @@ logs/*.log
 logs/*.json
 logs/*.jsonl
 outputs/
-results/
+results/*
+!results/baseline_final_20261001_020033/
+!results/baseline_final_20261001_020033/**
+results/**/*.wav
+!results/README.md
 eval_results/
 benchmark_output/
 *.tar.gz
@@ -75,3 +84,5 @@ demo/out/*
 demo/voice_clips/
 demo/*.wav
 
+# Local buffers
+.freebuff/
