@@ -1,12 +1,12 @@
 # Interruptible Real-Time Voice Agent — Samsung PRISM Gen AI Hackathon 3.0
 
-> **Theme 05 — Interruptible Real-Time Agents**
-> **Benchmark:** [Full-Duplex-Bench v3 (FDB-v3)](https://github.com/DanielLin94144/Full-Duplex-Bench) — multi-step tool calling under real-world speech disfluency
-> 
-> **Stack:** LiveKit Voice Agents SDK · Google Gemini 2.5 Flash Native Audio (end-to-end speech model)
-> **Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md) · **Contact:** msrit.cache.me@example.com
-> **Submission Tag:** `PRISM_GENAI_HACKATHON_Y2026`
-> **Full Demo Video (with voiceover):** [`demo/out/final_submission_with_voice.mp4`](demo/out/final_submission_with_voice.mp4) (04:30 min, 1440x900 @ 30 fps)
+**Theme 05 — Interruptible Real-Time Agents**
+**Benchmark:** [Full-Duplex-Bench v3 (FDB-v3)](https://github.com/DanielLin94144/Full-Duplex-Bench) — multi-step tool calling under real-world speech disfluency
+**Stack:** LiveKit Voice Agents SDK · Google Gemini 2.5 Flash Native Audio (end-to-end speech model)
+**Team:** MSRIT_Cache_Me · [AI usage disclosure](DISCLOSURE.md)
+**Contact:** 1ms24is013@msrit.edu
+**Submission Tag:** `PRISM_GENAI_HACKATHON_Y2026`
+**Full Demo Video:** [`DEMO.mp4`](DEMO.mp4) (04:30 min, 1440x900 @ 30 fps)
 
 <p align="center">
   <img src="docs/images/01_title_banner.png" alt="Samsung Gen AI Hackathon Theme 05 Demo Banner" width="95%" />
